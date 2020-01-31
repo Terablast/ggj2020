@@ -3,42 +3,66 @@ import contextlib
 with contextlib.redirect_stdout(None):
     import pygame
 
-options = {
-    'verbose': False
-}
+
+class GameOptions:
+
+    def __init__(
+            self,
+            verbose=False,
+            fullscreen=False,
+            width=600,
+            height=800
+    ) -> None:
+        super().__init__()
+        self.verbose = verbose
+        self.fullscreen = fullscreen
+        self.width = width if width is not None else 800
+        self.height = height if height is not None else 600
 
 
-def start(verbose):
-    options['verbose'] = verbose
-    print_verbose('Verbosity is on!')
+class Game:
 
-    pygame.init()
+    def __init__(
+            self,
+            game_options: GameOptions
+    ) -> None:
+        if game_options is not None:
+            self.options = game_options
+        else:
+            self.options = GameOptions()
 
-    # Set up the drawing window
-    screen = pygame.display.set_mode([500, 500])
+    def print_verbose(self, msg):
+        if self.options.verbose:
+            print(msg)
 
-    # Run until the user asks to quit
-    running = True
-    while running:
+    def start(self):
+        self.print_verbose('Verbosity is on!')
 
-        # Did the user click the window close button?
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
+        pygame.init()
 
-        # Fill the background with white
-        screen.fill((255, 255, 255))
+        # Set up the drawing window
+        screen = pygame.display.set_mode(
+            [self.options.width, self.options.height],
+            flags=pygame.FULLSCREEN if self.options.fullscreen else 0
+        )
 
-        # Draw a solid blue circle in the center
-        pygame.draw.circle(screen, (0, 0, 255), (250, 250), 75)
+        # Run until the user asks to quit
+        running = True
+        while running:
 
-        # Flip the display
-        pygame.display.flip()
+            # Did the user click the window close button?
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_F4 and event.mod & pygame.KMOD_ALT != 0):
+                    running = False
 
-    # Done! Time to quit.
-    pygame.quit()
+            # Fill the background with white
+            screen.fill((255, 255, 255))
 
+            # Draw a solid blue circle in the center
+            pygame.draw.circle(screen, (0, 0, 255), (250, 250), 75)
 
-def print_verbose(msg):
-    if options['verbose']:
-        print(msg)
+            # Flip the display
+            pygame.display.flip()
+
+        # Done! Time to quit.
+        pygame.quit()
