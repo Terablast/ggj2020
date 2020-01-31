@@ -1,4 +1,5 @@
 import contextlib
+import random
 
 with contextlib.redirect_stdout(None):
     import pygame
@@ -52,11 +53,12 @@ class Game:
 
             # Did the user click the window close button?
             for event in pygame.event.get():
-                if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_F4 and event.mod & pygame.KMOD_ALT != 0):
+                if event.type == pygame.QUIT or (
+                        event.type == pygame.KEYDOWN and event.key == pygame.K_F4 and event.mod & pygame.KMOD_ALT != 0):
                     running = False
 
-            # Fill the background with white
-            screen.fill((255, 255, 255))
+            # Fill the background with no racism
+            screen.fill((random.randint(0, 100), random.randint(0, 100), random.randint(0, 100)))
 
             # Draw a solid blue circle in the center
             pygame.draw.circle(screen, (0, 0, 255), (250, 250), 75)
