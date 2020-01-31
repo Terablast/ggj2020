@@ -1,5 +1,6 @@
 import contextlib
 import random
+import pymunk
 
 with contextlib.redirect_stdout(None):
     import pygame
@@ -47,21 +48,31 @@ class Game:
             flags=pygame.FULLSCREEN if self.options.fullscreen else 0
         )
 
+        space = pymunk.Space()
+        space.gravity = 0, 10
+
+        ball = pymunk.Body(1, 1666)
+        ball.position = 50, 100
+
+        ball_poly = pymunk.Poly.create_box(ball, radius=50)
+        space.add(ball, ball_poly)
+
         # Run until the user asks to quit
         running = True
         while running:
-
             # Did the user click the window close button?
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or (
                         event.type == pygame.KEYDOWN and event.key == pygame.K_F4 and event.mod & pygame.KMOD_ALT != 0):
                     running = False
 
-            # Fill the background with no racism
-            screen.fill((random.randint(0, 100), random.randint(0, 100), random.randint(0, 100)))
+            space.step(0.02)
+
+            # Fill the background with white
+            screen.fill((255, 255, 255))
 
             # Draw a solid blue circle in the center
-            pygame.draw.circle(screen, (0, 0, 255), (250, 250), 75)
+            pygame.draw.circle(screen, (0, 0, 255), (int(ball.position.x), int(ball.position.y)), 50)
 
             # Flip the display
             pygame.display.flip()
