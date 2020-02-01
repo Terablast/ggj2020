@@ -13,8 +13,8 @@ class Pirate(pygame.sprite.Sprite):
         super().__init__(*groups)
 
         self.screen = screen
-        self.img = pygame.image.load('./assets/pirate.png')
-        self.mask = pygame.mask.from_surface(pygame.image.load('./assets/pirate.png'))
+        self.img = pygame.image.load('./assets/pirate.png').convert_alpha()
+        self.mask = pygame.mask.from_surface(pygame.image.load('./assets/pirate.png').convert_alpha())
         self.rect: pygame.Rect = self.img.get_rect()
 
         self.controls = controls

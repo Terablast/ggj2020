@@ -2,7 +2,7 @@ import contextlib
 import random
 import pygame
 
-from entities.boat import Boat
+from entities.boats import Boats
 from entities.pirate import Pirate
 
 
@@ -46,9 +46,9 @@ class Game:
             flags=pygame.FULLSCREEN if self.options.fullscreen else 0
         )
 
-        img_background = pygame.image.load('assets/bg.png').convert_alpha()
+        img_background = pygame.image.load('assets/background.jpg').convert()
 
-        boat = Boat(screen, (400, 300))
+        boat = Boats(screen, (0, 0))
         pirate = Pirate(screen, (1000, 800), {
             'up': pygame.K_UP,
             'right': pygame.K_RIGHT,
@@ -75,7 +75,9 @@ class Game:
                 pygame.key.get_pressed()
             )
 
-            if pygame.sprite.collide_mask(boat, pirate) is not None:
+            print (pygame.sprite.collide_mask(pirate, boat))
+
+            if pygame.sprite.collide_mask(pirate, boat) is not None:
                 screen.blit(img_background, (5, 0))
             else:
                 screen.blit(img_background, (0, 0))
@@ -87,7 +89,7 @@ class Game:
             pygame.display.flip()
 
             c.tick()
-            print(c.get_fps())
+            #print(c.get_fps())
 
         # Done! Time to quit.
         pygame.quit()
