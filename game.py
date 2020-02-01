@@ -5,6 +5,9 @@ import pygame
 from entities.boats import Boats
 from entities.ladders import Ladders
 from entities.pirate import Pirate
+from entities.incident import Fire
+from entities.incident import Flood
+from entities.incident import Tear
 
 
 class GameOptions:

@@ -69,13 +69,11 @@ class Tear(Incident):
             screen,
             *groups
     ):
-        img = pygame.image.load('assets/flood.jpg').convert()
+        img = pygame.image.load('assets/tear.png').convert()
         super().__init__(
             self,
             img,
             pirate,
             screen,
-            label_number
+            groups
         )
-
-    def
