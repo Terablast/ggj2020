@@ -21,7 +21,9 @@ class Pirate(pygame.sprite.Sprite):
 
         self.sprites = {
             'normal': pygame.image.load('./assets/pirate.png').convert_alpha(),
-            'crouch': pygame.image.load('./assets/pirate_crouch.png').convert_alpha()
+            'crouch': pygame.image.load('./assets/pirate_crouch.png').convert_alpha(),
+            'climb1': pygame.image.load('./assets/pirate_grimpe1.png').convert_alpha(),
+            'climb2': pygame.image.load('./assets/pirate_grimpe2.png').convert_alpha()
         }
 
         self.img = self.sprites['normal']
@@ -52,17 +54,22 @@ class Pirate(pygame.sprite.Sprite):
     ):
         on_ladder = pygame.sprite.collide_mask(self, ladders) is not None
 
-        if keys[self.controls['up']] and (
-                not self.jumping
-                or on_ladder
-        ):
-            self.vy += JUMP_VELOCITY
+        if keys[self.controls['up']]:
+            if on_ladder:
+                self.vy = JUMP_VELOCITY / 5
+            elif not self.jumping:
+                self.vy += JUMP_VELOCITY
 
         if keys[self.controls['right']]:
             self.vx = min(self.vx + 1, MAX_SPEED)
 
         if keys[self.controls['down']]:
             self.img = self.sprites['crouch']
+        elif on_ladder and keys[self.controls['up']]:
+            if (pygame.time.get_ticks() // 250) % 2 == 0:
+                self.img = self.sprites['climb1']
+            else:
+                self.img = self.sprites['climb2']
         else:
             self.img = self.sprites['normal']
 
@@ -126,6 +133,7 @@ class Pirate(pygame.sprite.Sprite):
 
     def draw(self):
         self.screen.blit(self.img, self.rect)
+
 
 '''
     def new_event_check(self):  # retourne true si un evenement arrive
