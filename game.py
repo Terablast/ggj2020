@@ -3,6 +3,7 @@ import random
 import pygame
 
 from entities.boats import Boats
+from entities.ladders import Ladders
 from entities.pirate import Pirate
 
 
@@ -48,12 +49,22 @@ class Game:
 
         img_background = pygame.image.load('assets/background.jpg').convert()
 
-        boat = Boats(screen, (0, 0))
-        pirate = Pirate(screen, (1000, 800), {
+        boats = Boats(screen, (0, 0))
+        ladders = Ladders(screen, (0, 0))
+
+
+        pirate_left = Pirate(screen, (200, -200), {
+            'up': pygame.K_w,
+            'right': pygame.K_d,
+            'down': pygame.K_s,
+            'left': pygame.K_a
+        })
+
+        pirate_right = Pirate(screen, (1700, -200), {
             'up': pygame.K_UP,
             'right': pygame.K_RIGHT,
             'down': pygame.K_DOWN,
-            'left': pygame.K_LEFT,
+            'left': pygame.K_LEFT
         })
 
         c = pygame.time.Clock()
@@ -70,26 +81,31 @@ class Game:
                 ):
                     running = False
 
-            boat.update()
-            pirate.update(
-                pygame.key.get_pressed()
+            boats.update()
+
+            pirate_left.update(
+                pygame.key.get_pressed(),
+                ladders
+            )
+            pirate_right.update(
+                pygame.key.get_pressed(),
+                ladders
             )
 
-            print (pygame.sprite.collide_mask(pirate, boat))
+            pirate_left.collide(boats.mask)
+            pirate_right.collide(boats.mask)
 
-            if pygame.sprite.collide_mask(pirate, boat) is not None:
-                screen.blit(img_background, (5, 0))
-            else:
-                screen.blit(img_background, (0, 0))
+            screen.blit(img_background, (0, 0))
 
-            boat.draw()
-            pirate.draw()
+            boats.draw()
+            pirate_left.draw()
+            pirate_right.draw()
 
             # Flip the display
             pygame.display.flip()
 
-            c.tick()
-            #print(c.get_fps())
+            c.tick(120)
+            # print(c.get_fps())
 
         # Done! Time to quit.
         pygame.quit()
