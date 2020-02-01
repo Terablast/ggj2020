@@ -13,7 +13,7 @@ class GameOptions:
             verbose=False,
             fullscreen=False,
             width=600,
-            height=800
+            height=800,
     ) -> None:
         super().__init__()
         self.verbose = verbose
@@ -31,6 +31,7 @@ class Game:
             self.options = game_options
         else:
             self.options = GameOptions()
+        self.c = pygame.time.Clock()
 
     def print_verbose(self, msg):
         if self.options.verbose:
@@ -53,21 +54,27 @@ class Game:
         ladders = Ladders(screen, (0, 0))
 
 
-        pirate_left = Pirate(screen, (200, -200), {
-            'up': pygame.K_w,
-            'right': pygame.K_d,
-            'down': pygame.K_s,
-            'left': pygame.K_a
-        })
+        pirate_left = Pirate(screen,
+                             (200, -200),
+                             True, #joueur gauche
+                             {
+                            'up': pygame.K_w,
+                            'right': pygame.K_d,
+                            'down': pygame.K_s,
+                            'left': pygame.K_a,
+                            })
 
-        pirate_right = Pirate(screen, (1700, -200), {
-            'up': pygame.K_UP,
-            'right': pygame.K_RIGHT,
-            'down': pygame.K_DOWN,
-            'left': pygame.K_LEFT
-        })
+        pirate_right = Pirate(screen,
+                              (1700, -200),
+                              False, #joueur droite
+                               {
+                                'up': pygame.K_UP,
+                                'right': pygame.K_RIGHT,
+                                'down': pygame.K_DOWN,
+                                'left': pygame.K_LEFT,
+                              })
 
-        c = pygame.time.Clock()
+
 
         # Run until the user asks to quit
         running = True
@@ -104,8 +111,8 @@ class Game:
             # Flip the display
             pygame.display.flip()
 
-            c.tick(120)
-            # print(c.get_fps())
+            self.c.tick(120)
+            # print(self.c.get_fps())
 
         # Done! Time to quit.
         pygame.quit()
