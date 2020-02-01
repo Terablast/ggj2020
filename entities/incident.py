@@ -4,8 +4,8 @@ import pygame
 class Incident(pygame.sprite.Sprite):
     def __init__(
             self,
-            is_player_left,
             img,
+            pirate,
             screen,
             *groups
     ):
@@ -14,6 +14,8 @@ class Incident(pygame.sprite.Sprite):
         self.pos = (0, 0)
         self.screen = screen
         self.img = img
+
+        self.pirate = pirate
 
         self.rect: pygame.Rect = self.img.get_rect()
         self.rect.left = self.pos[0]
@@ -26,7 +28,7 @@ class Incident(pygame.sprite.Sprite):
 class Fire(Incident):
     def __init__(
             self,
-            is_player_left,
+            pirate,
             screen,
             *groups
     ):
@@ -35,7 +37,7 @@ class Fire(Incident):
         super().__init__(
             self,
             img,
-            is_player_left,
+            pirate,
             screen,
             *groups
         )
@@ -44,7 +46,7 @@ class Fire(Incident):
 class Flood(Incident):
     def __init__(
             self,
-            is_player_left,
+            pirate,
             pos,
             screen,
             *groups
@@ -54,7 +56,7 @@ class Flood(Incident):
         super().__init__(
             self,
             img,
-            is_player_left,
+            pirate,
             screen,
             *groups
         )
