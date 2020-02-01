@@ -1,6 +1,7 @@
 from game import *
 import argparse
 
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-v", "--verbose", help="increase output verbosity", action="store_true")
@@ -9,14 +10,14 @@ def main():
     parser.add_argument("--height", help="game window height", type=int)
     args = parser.parse_args()
 
-    gameInstance = Game(GameOptions(
+    game_instance = Game(GameOptions(
         verbose=args.verbose,
         fullscreen=args.fullscreen,
         width=args.width,
         height=args.height
     ))
 
-    gameInstance.start()
+    game_instance.start()
 
 
 if __name__ == "__main__":

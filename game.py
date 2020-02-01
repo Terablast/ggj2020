@@ -1,13 +1,12 @@
 import contextlib
 import random
-import pymunk
+import pygame
 
-with contextlib.redirect_stdout(None):
-    import pygame
+from entities.boat import Boat
+from entities.pirate import Pirate
 
 
 class GameOptions:
-
     def __init__(
             self,
             verbose=False,
@@ -23,7 +22,6 @@ class GameOptions:
 
 
 class Game:
-
     def __init__(
             self,
             game_options: GameOptions
@@ -48,14 +46,17 @@ class Game:
             flags=pygame.FULLSCREEN if self.options.fullscreen else 0
         )
 
-        space = pymunk.Space()
-        space.gravity = 0, 10
+        img_background = pygame.image.load('assets/bg.png').convert_alpha()
 
-        ball = pymunk.Body(1, 1666)
-        ball.position = 50, 100
+        boat = Boat(screen, (400, 300))
+        pirate = Pirate(screen, (1000, 800), {
+            'up': pygame.K_UP,
+            'right': pygame.K_RIGHT,
+            'down': pygame.K_DOWN,
+            'left': pygame.K_LEFT,
+        })
 
-        ball_poly = pymunk.Poly.create_box(ball, radius=50)
-        space.add(ball, ball_poly)
+        c = pygame.time.Clock()
 
         # Run until the user asks to quit
         running = True
@@ -63,19 +64,30 @@ class Game:
             # Did the user click the window close button?
             for event in pygame.event.get():
                 if event.type == pygame.QUIT or (
-                        event.type == pygame.KEYDOWN and event.key == pygame.K_F4 and event.mod & pygame.KMOD_ALT != 0):
+                        event.type == pygame.KEYDOWN and
+                        event.key == pygame.K_F4 and
+                        event.mod & pygame.KMOD_ALT != 0
+                ):
                     running = False
 
-            space.step(0.02)
+            boat.update()
+            pirate.update(
+                pygame.key.get_pressed()
+            )
 
-            # Fill the background with white
-            screen.fill((255, 255, 255))
+            if pygame.sprite.collide_mask(boat, pirate) is not None:
+                screen.blit(img_background, (5, 0))
+            else:
+                screen.blit(img_background, (0, 0))
 
-            # Draw a solid blue circle in the center
-            pygame.draw.circle(screen, (0, 0, 255), (int(ball.position.x), int(ball.position.y)), 50)
+            boat.draw()
+            pirate.draw()
 
             # Flip the display
             pygame.display.flip()
+
+            c.tick()
+            print(c.get_fps())
 
         # Done! Time to quit.
         pygame.quit()
