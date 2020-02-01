@@ -25,6 +25,10 @@ class Pirate(pygame.sprite.Sprite):
         self.vx = 0
         self.vy = 0
 
+        self.incident_list = [] #chaque joueur a une liste des incidents qu'il doit resoudre
+
+
+
     def update(
             self,
             keys
