@@ -1,5 +1,5 @@
-import contextlib
-import random
+import datetime
+
 import pygame
 
 from entities.boats import Boats
@@ -53,30 +53,32 @@ class Game:
         boats = Boats(screen, (0, 0))
         ladders = Ladders(screen, (0, 0))
 
+        pirate_left = Pirate(
+            screen,
+            (200, -200),
+            True,  # joueur gauche
+            {
+                'up': pygame.K_w,
+                'right': pygame.K_d,
+                'down': pygame.K_s,
+                'left': pygame.K_a,
+            }
+        )
 
-        pirate_left = Pirate(screen,
-                             (200, -200),
-                             True, #joueur gauche
-                             {
-                            'up': pygame.K_w,
-                            'right': pygame.K_d,
-                            'down': pygame.K_s,
-                            'left': pygame.K_a,
-                            })
+        pirate_right = Pirate(
+            screen,
+            (1700, -200),
+            False,  # joueur droite
+            {
+                'up': pygame.K_UP,
+                'right': pygame.K_RIGHT,
+                'down': pygame.K_DOWN,
+                'left': pygame.K_LEFT,
+            }
+        )
 
-        pirate_right = Pirate(screen,
-                              (1700, -200),
-                              False, #joueur droite
-                               {
-                                'up': pygame.K_UP,
-                                'right': pygame.K_RIGHT,
-                                'down': pygame.K_DOWN,
-                                'left': pygame.K_LEFT,
-                              })
+        last_event = datetime.datetime.now()
 
-
-
-        # Run until the user asks to quit
         running = True
         while running:
             # Did the user click the window close button?
@@ -89,6 +91,12 @@ class Game:
                     running = False
 
             boats.update()
+
+            since_last_event = datetime.datetime.now() - last_event
+
+            if (since_last_event.seconds > 10):
+                last_event = datetime.datetime.now()
+                # TODO Faire apparaitre les events pour les deux joueurs!
 
             pirate_left.update(
                 pygame.key.get_pressed(),
