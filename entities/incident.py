@@ -62,16 +62,20 @@ class Flood(Incident):
         )
 
 
-'''
 class Tear(Incident):
-    def __init__(self,
-                 is_player_left,
-                 label_number):
+    def __init__(
+            self,
+            pirate,
+            screen,
+            *groups
+    ):
         img = pygame.image.load('assets/flood.jpg').convert()
         super().__init__(
             self,
             img,
-            is_player_left,
+            pirate,
+            screen,
             label_number
         )
-'''
+
+    def
