@@ -1,5 +1,6 @@
 import pygame
-
+import math
+from entities.score import Score
 MAX_SPEED = 4
 JUMP_VELOCITY = -8
 GRAVITY = 0.25
@@ -44,6 +45,12 @@ class Pirate(pygame.sprite.Sprite):
         self.imminent = True  # True si un incident peut arriver (active la generation aleatoire d'un incident)
         self.is_player_left = is_player_left
         self.event_list = []
+        #initialise le score:
+        if is_player_left:
+            scorex=50
+        else:
+            scorex=1750
+        self.score=Score((scorex,50))
 
     def update(
             self,
@@ -95,6 +102,8 @@ class Pirate(pygame.sprite.Sprite):
             self.rect.top = self.initial_pos[1]
             self.respawn_timer = -1
 
+        self.score.value-=0.01
+
     def collide(self, mask):
         dx = mask.overlap_area(self.mask, (self.rect.x + 1, self.rect.y)) \
              - mask.overlap_area(self.mask, (self.rect.x - 1, self.rect.y))
@@ -125,6 +134,7 @@ class Pirate(pygame.sprite.Sprite):
             self.jumping = True
 
     def draw(self):
+        self.score.draw(math.floor(self.score.value),self.score.pos,self.screen)
         self.screen.blit(self.img, self.rect)
 
 '''
