@@ -62,7 +62,7 @@ class Pirate(pygame.sprite.Sprite):
         if is_player_left:
             scorex = 50
         else:
-            scorex = 1650
+            scorex = 1660
         self.score = Score((scorex, 50))
         self.incidents = []
 

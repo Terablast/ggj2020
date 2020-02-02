@@ -218,7 +218,7 @@ class Game:
                                 right_win_go_screen = False
 
                         pygame.display.flip()
-                if pirate_right.score.value <= 0.0:
+                elif pirate_right.score.value <= 0.0:
                     running = False
                     left_win_go_screen = True
 

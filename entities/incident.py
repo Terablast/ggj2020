@@ -27,8 +27,10 @@ class Incident(pygame.sprite.Sprite):
         self.rect.left = self.pos[0]
         self.rect.top = self.pos[1]
 
+        self.bar_size=(100, 10)
         self.life_points = 100
-        self.bar = Bar(self.rect.bottomleft, (100, 20), 1000, self.life_points)
+        #self.rect.bottomleft
+        self.bar = Bar((self.rect.bottomleft[0]+70,self.rect.bottomleft[1]+5), self.bar_size, 1000, self.life_points)
 
     def draw(self):
         self.screen.blit(self.img, self.rect)
@@ -37,18 +39,19 @@ class Incident(pygame.sprite.Sprite):
 
 class Fire(Incident):
     FRAMES = []
+
     POSITIONS_LEFT = [
-        (194, 487),
-        (650, 487),
-        (193, 623),
-        (693, 623),
+        (144, 487),
+        (550, 487),
+        (593, 623),
+        (93, 623),
     ]
 
     POSITIONS_RIGHT = [
-        (1200, 487),
-        (1700, 487),
-        (1200, 623),
-        (1700, 623),
+        (1110, 487),
+        (1530, 487),
+        (1050, 623),
+        (1600, 623),
     ]
 
     def __init__(
