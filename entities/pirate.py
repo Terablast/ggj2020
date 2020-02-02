@@ -43,9 +43,8 @@ class Pirate(pygame.sprite.Sprite):
         self.initial_pos = pos
         self.respawn_timer = -1
 
-        self.imminent = True  # True si un incident peut arriver (active la generation aleatoire d'un incident)
         self.is_player_left = is_player_left
-        self.event_list = []
+        self.incidents = []
 
     def update(
             self,
@@ -132,32 +131,7 @@ class Pirate(pygame.sprite.Sprite):
             self.jumping = True
 
     def draw(self):
+        for incident in self.incidents:
+            incident.draw()
+
         self.screen.blit(self.img, self.rect)
-
-
-'''
-    def new_event_check(self):  # retourne true si un evenement arrive
-        if self.imminent:
-            if random.random() < 60 * 0.05:  # ???? GameOptions.c.get_fps()
-                self.imminent = False
-                return True
-            else:
-                return False
-
-        else:
-            return False
-
-    def add_event(self):
-        N = math.ceil(random.random() * 8)
-        for i in self.event_list:
-            if abs(
-                    i.label_number - N) < 0.01:  # si meme numero: si on essaie de creer un event qui exite deja. dif pour eviter comparaison entre 1.0 et 1 etc...
-                N += 1
-
-        if N == 1 or N == 2:
-            self.event_list.append(Tear(self.is_player_left, N))
-        if N == 3 or N == 4 or N == 5 or N == 6:
-            self.event_list.append(Fire(self.is_player_left, N))
-        if N == 7 or N == 8:
-            self.event_list.append(Flood(self.is_player_left, N))
-'''

@@ -1,4 +1,2 @@
-
-
 FPS = 144
-DT = 1/FPS
+DT = 1 / FPS

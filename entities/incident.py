@@ -1,3 +1,5 @@
+import random
+
 import pygame
 
 
@@ -11,7 +13,9 @@ class Incident(pygame.sprite.Sprite):
     ):
         super().__init__(*groups)
 
-        self.pos = (0, 0)
+        if self.pos is None:
+            self.pos = (0, 0)
+
         self.screen = screen
         self.img = img
 
@@ -26,35 +30,59 @@ class Incident(pygame.sprite.Sprite):
 
 
 class Fire(Incident):
+    FRAMES = []
+    POSITIONS_LEFT = [
+        (194, 487),
+        (650, 487),
+        (193, 623),
+        (693, 623),
+    ]
+
     def __init__(
             self,
             pirate,
             screen,
             *groups
     ):
-        img = pygame.image.load('assets/fire.png').convert_alpha()
+        if len(Fire.FRAMES) == 0:
+            for i in range(1, 11):
+                Fire.FRAMES.append(
+                    pygame.image.load('assets/fire/frame (' + str(i) + ').png').convert_alpha()
+                )
+
+        img = Fire.FRAMES[0]
+
+        other_fires = [x for x in pirate.incidents if type(x) is Fire]
+
+        potential_positions = [x for x in Fire.POSITIONS_LEFT]
+
+        for of in other_fires:
+            potential_positions.remove(of.pos)
+
+        self.pos = random.choice(potential_positions)
 
         super().__init__(
-            self,
             img,
             pirate,
             screen,
             *groups
         )
 
+    def draw(self):
+        self.img = Fire.FRAMES[(pygame.time.get_ticks() // 20) % 10]
+        super().draw()
+
 
 class Flood(Incident):
     def __init__(
             self,
             pirate,
-            pos,
             screen,
             *groups
     ):
         img = pygame.image.load('assets/flood.jpg').convert_alpha()
 
         super().__init__(
-            self,
             img,
             pirate,
             screen,
