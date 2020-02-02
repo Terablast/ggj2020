@@ -24,18 +24,34 @@ class Pirate(pygame.sprite.Sprite):
 
         self.screen = screen
 
-        self.sprites = {
-            'punch_right': pygame.image.load('./assets/pirate/punch_right.png').convert_alpha(),
-            'punch_left': pygame.image.load('./assets/pirate/punch_left.png').convert_alpha(),
-            'normal': pygame.image.load('./assets/pirate/pirate.png').convert_alpha(),
-            'crouch': pygame.image.load('./assets/pirate/pirate_crouch.png').convert_alpha(),
-            'climb1': pygame.image.load('./assets/pirate/pirate_grimpe1.png').convert_alpha(),
-            'climb2': pygame.image.load('./assets/pirate/pirate_grimpe2.png').convert_alpha(),
-            'water_right': pygame.image.load('./assets/pirate/water_right.png').convert_alpha(),
-            'water_left': pygame.image.load('./assets/pirate/water_left.png').convert_alpha(),
-            'bucket_right':pygame.image.load('./assets/pirate/water_right.png').convert_alpha(),
-            'bucket_left': pygame.image.load('./assets/pirate/water_left.png').convert_alpha()
-        }
+        self.is_player_left = is_player_left
+        if self.is_player_left:
+            self.sprites = {
+                'punch_right': pygame.image.load('./assets/pirate/red/punch_right.png').convert_alpha(),
+                'punch_left': pygame.image.load('./assets/pirate/red/punch_left.png').convert_alpha(),
+                'normal': pygame.image.load('./assets/pirate/red/pirate.png').convert_alpha(),
+                'crouch': pygame.image.load('./assets/pirate/red/pirate_crouch.png').convert_alpha(),
+                'climb1': pygame.image.load('./assets/pirate/red/pirate_grimpe1.png').convert_alpha(),
+                'climb2': pygame.image.load('./assets/pirate/red/pirate_grimpe2.png').convert_alpha(),
+                'water_right': pygame.image.load('./assets/pirate/red/water_right.png').convert_alpha(),
+                'water_left': pygame.image.load('./assets/pirate/red/water_left.png').convert_alpha(),
+                'bucket_right':pygame.image.load('./assets/pirate/red/ecope_right.png').convert_alpha(), #changer quand pret
+                'bucket_left': pygame.image.load('./assets/pirate/red/ecope_left.png').convert_alpha()
+            }
+        else:
+            self.sprites = {
+                'punch_right': pygame.image.load('./assets/pirate/blue/punch_right_blue.png').convert_alpha(),
+                'punch_left': pygame.image.load('./assets/pirate/blue/punch_left_blue.png').convert_alpha(),
+                'normal': pygame.image.load('./assets/pirate/blue/pirate_blue.png').convert_alpha(),
+                'crouch': pygame.image.load('./assets/pirate/blue/pirate_crouch_blue.png').convert_alpha(),
+                'climb1': pygame.image.load('./assets/pirate/blue/pirate_grimpe1_blue.png').convert_alpha(),
+                'climb2': pygame.image.load('./assets/pirate/blue/pirate_grimpe2_blue.png').convert_alpha(),
+                'water_right': pygame.image.load('./assets/pirate/blue/water_right_blue.png').convert_alpha(),
+                'water_left': pygame.image.load('./assets/pirate/blue/water_left_blue.png').convert_alpha(),
+                'bucket_right': pygame.image.load('./assets/pirate/blue/water_right_blue.png').convert_alpha(),
+                'bucket_left': pygame.image.load('./assets/pirate/blue/water_left_blue.png').convert_alpha()
+            }
+
 
         self.img = self.sprites['normal']
         self.mask = pygame.mask.from_surface(pygame.image.load('./assets/pirate/pirate_mask.png').convert_alpha())
@@ -54,7 +70,6 @@ class Pirate(pygame.sprite.Sprite):
         self.initial_pos = pos
         self.respawn_timer = -1
 
-        self.is_player_left = is_player_left
 
         self.touch_fire = None
         self.touch_fire_right = True
