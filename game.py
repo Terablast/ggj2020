@@ -5,8 +5,6 @@ from entities.incident import *
 from entities.ladders import Ladders
 from entities.pirate import Pirate
 
-import sys
-
 
 class GameOptions:
     def __init__(
@@ -52,8 +50,9 @@ class Game:
         #    flags=pygame.FULLSCREEN if self.options.fullscreen else 0
         # )
         screen_resized = pygame.display.set_mode((self.options.width, self.options.height),
-                                         pygame.HWSURFACE | pygame.DOUBLEBUF | pygame.RESIZABLE)
-        screen = pygame.Surface((1920,1080),)
+                                                 pygame.HWSURFACE | pygame.DOUBLEBUF | pygame.RESIZABLE
+                                                 | pygame.FULLSCREEN if self.options.fullscreen else 0)
+        screen = pygame.Surface((1920, 1080), )
         start_menu = True
         img_background = pygame.image.load('assets/menu.jpg').convert()
         screen.blit(img_background, (0, 0))
@@ -69,9 +68,10 @@ class Game:
 
                 if event.type == pygame.VIDEORESIZE:
                     screen_resized = pygame.display.set_mode(event.dict['size'],
-                                                             pygame.HWSURFACE | pygame.DOUBLEBUF | pygame.RESIZABLE)
+                                                             pygame.HWSURFACE | pygame.DOUBLEBUF | pygame.RESIZABLE
+                                                             | pygame.FULLSCREEN if self.options.fullscreen else 0)
                     self.options.width, self.options.height = screen_resized.get_size()
-                    self.printFinalScreen(screen,screen_resized)
+                    self.printFinalScreen(screen, screen_resized)
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                     start_menu = False
             pygame.display.flip()
@@ -123,7 +123,8 @@ class Game:
 
                 if event.type == pygame.VIDEORESIZE:
                     screen_resized = pygame.display.set_mode(event.dict['size'],
-                                                     pygame.HWSURFACE | pygame.DOUBLEBUF | pygame.RESIZABLE)
+                                                             pygame.HWSURFACE | pygame.DOUBLEBUF | pygame.RESIZABLE
+                                                             | pygame.FULLSCREEN if self.options.fullscreen else 0)
                     self.options.width, self.options.height = screen_resized.get_size()
 
             boats.update()
@@ -183,9 +184,9 @@ class Game:
             pirate_left.draw()
             pirate_right.draw()
 
-            screen.blit(img_rain, (0, -1080 + (
-                pygame.time.get_ticks() % 1080
-            )))
+            # screen.blit(img_rain, (0, -1080 + (
+            #    pygame.time.get_ticks() % 1080
+            # )))
 
             self.printFinalScreen(screen, screen_resized)
             # Flip the display
@@ -198,5 +199,7 @@ class Game:
         pygame.quit()
 
     def printFinalScreen(self, screen, screen_resized):
-        # On garde DISPLAYSURFcopy à la taille originale, resize sur DISPLAYSURF puis affiche
-        screen_resized.blit(pygame.transform.scale(screen, (self.options.width, self.options.height)), (0, 0))
+        if self.options.width == 1920 and self.options.height == 1080:
+            screen_resized.blit(screen, (0, 0))
+        else:
+            screen_resized.blit(pygame.transform.scale(screen, (self.options.width, self.options.height)), (0, 0))
