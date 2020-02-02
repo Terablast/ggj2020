@@ -69,7 +69,7 @@ class Fire(Incident):
         )
 
     def draw(self):
-        self.img = Fire.FRAMES[(pygame.time.get_ticks() // 20) % 10]
+        self.img = Fire.FRAMES[(pygame.time.get_ticks() // 50) % 10]
         super().draw()
 
 

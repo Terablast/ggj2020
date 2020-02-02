@@ -1,6 +1,5 @@
 import datetime
 
-from entities.bar import Bar
 from entities.boats import Boats
 from entities.incident import *
 from entities.ladders import Ladders
@@ -50,16 +49,17 @@ class Game:
             [self.options.width, self.options.height],
             flags=pygame.FULLSCREEN if self.options.fullscreen else 0
         )
-        start_menu=True
+        start_menu = True
         img_background = pygame.image.load('assets/menu.jpg').convert()
         screen.blit(img_background, (0, 0))
         pygame.display.flip()
         while start_menu:
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                    start_menu=False
+                    start_menu = False
 
         img_background = pygame.image.load('assets/background.jpg').convert()
+        img_rain = pygame.image.load('assets/rain.png').convert_alpha()
 
         boats = Boats(screen, (0, 0))
         ladders = Ladders(screen, (0, 0))
@@ -160,6 +160,10 @@ class Game:
             boats.draw()
             pirate_left.draw()
             pirate_right.draw()
+
+            screen.blit(img_rain, (0, -1080 + (
+                pygame.time.get_ticks() % 1080
+            )))
 
             # Flip the display
             pygame.display.flip()

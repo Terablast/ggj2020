@@ -23,7 +23,7 @@ class Pirate(pygame.sprite.Sprite):
 
         self.sprites = {
             'punch_right': pygame.image.load('./assets/pirate/punch_right.png').convert_alpha(),
-            'punch_left': pygame.image.load('./assets/pirate/punch_left.png').convert_alpha()
+            'punch_left': pygame.image.load('./assets/pirate/punch_left.png').convert_alpha(),
             'normal': pygame.image.load('./assets/pirate/pirate.png').convert_alpha(),
             'crouch': pygame.image.load('./assets/pirate/pirate_crouch.png').convert_alpha(),
             'climb1': pygame.image.load('./assets/pirate/pirate_grimpe1.png').convert_alpha(),
