@@ -35,8 +35,18 @@ class Pirate(pygame.sprite.Sprite):
                 'climb2': pygame.image.load('./assets/pirate/red/pirate_climb2.png').convert_alpha(),
                 'water_right': pygame.image.load('./assets/pirate/red/water_right.png').convert_alpha(),
                 'water_left': pygame.image.load('./assets/pirate/red/water_left.png').convert_alpha(),
-                'bucket_right':pygame.image.load('./assets/pirate/red/ecope_right.png').convert_alpha(), #changer quand pret
-                'bucket_left': pygame.image.load('./assets/pirate/red/ecope_left.png').convert_alpha()
+                'bucket_right':pygame.image.load('./assets/pirate/red/ecope_right.png').convert_alpha(),
+                'bucket_left': pygame.image.load('./assets/pirate/red/ecope_left.png').convert_alpha(),
+                'punch_right_scorbut': pygame.image.load('./assets/pirate/red/scorbut/punch_right_scorbut.png').convert_alpha(),
+                'punch_left_scorbut': pygame.image.load('./assets/pirate/red/scorbut/punch_left_scorbut.png').convert_alpha(),
+                'normal_scorbut': pygame.image.load('./assets/pirate/red/scorbut/pirate_scorbut.png').convert_alpha(),
+                'crouch_scorbut': pygame.image.load('./assets/pirate/red/scorbut/pirate_crouch_scorbut.png').convert_alpha(),
+                'climb1_scorbut': pygame.image.load('./assets/pirate/red/scorbut/pirate_climb1_scorbut.png').convert_alpha(),
+                'climb2_scorbut': pygame.image.load('./assets/pirate/red/scorbut/pirate_climb2_scorbut.png').convert_alpha(),
+                'water_right_scorbut': pygame.image.load('./assets/pirate/red/scorbut/water_right_scorbut.png').convert_alpha(),
+                'water_left_scorbut': pygame.image.load('./assets/pirate/red/scorbut/water_left_scorbut.png').convert_alpha(),
+                'bucket_right_scorbut': pygame.image.load('./assets/pirate/red/scorbut/ecope_right_scorbut.png').convert_alpha(),
+                'bucket_left_scorbut': pygame.image.load('./assets/pirate/red/scorbut/ecope_left_scorbut.png').convert_alpha()
             }
         else:
             self.sprites = {
@@ -49,7 +59,17 @@ class Pirate(pygame.sprite.Sprite):
                 'water_right': pygame.image.load('./assets/pirate/blue/water_right_blue.png').convert_alpha(),
                 'water_left': pygame.image.load('./assets/pirate/blue/water_left_blue.png').convert_alpha(),
                 'bucket_right': pygame.image.load('./assets/pirate/blue/water_right_blue.png').convert_alpha(),
-                'bucket_left': pygame.image.load('./assets/pirate/blue/water_left_blue.png').convert_alpha()
+                'bucket_left': pygame.image.load('./assets/pirate/blue/water_left_blue.png').convert_alpha(),
+                'punch_right_scorbut': pygame.image.load('./assets/pirate/blue/scorbut/punch_right_blue_scorbut.png').convert_alpha(),
+                'punch_left_scorbut': pygame.image.load('./assets/pirate/blue/scorbut/punch_left_blue_scorbut.png').convert_alpha(),
+                'normal_scorbut': pygame.image.load('./assets/pirate/blue/scorbut/pirate_blue_scorbut.png').convert_alpha(),
+                'crouch_scorbut': pygame.image.load('./assets/pirate/blue/scorbut/pirate_crouch_blue_scorbut.png').convert_alpha(),
+                'climb1_scorbut': pygame.image.load('./assets/pirate/blue/scorbut/pirate_climb1_blue_scorbut.png').convert_alpha(),
+                'climb2_scorbut': pygame.image.load('./assets/pirate/blue/scorbut/pirate_climb2_blue_scorbut.png').convert_alpha(),
+                'water_right_scorbut': pygame.image.load('./assets/pirate/blue/scorbut/water_right_blue_scorbut.png').convert_alpha(),
+                'water_left_scorbut': pygame.image.load('./assets/pirate/blue/scorbut/water_left_blue_scorbut.png').convert_alpha(),
+                'bucket_right_scorbut': pygame.image.load('./assets/pirate/blue/scorbut/water_right_blue_scorbut.png').convert_alpha(),
+                'bucket_left_scorbut': pygame.image.load('./assets/pirate/blue/scorbut/water_left_blue_scorbut.png').convert_alpha()
             }
 
 
