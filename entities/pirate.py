@@ -179,7 +179,8 @@ class Pirate(pygame.sprite.Sprite):
                 self.touch_flood.life_points -= 1  # trouver quel inondation a ecoper et enlever 1 life_point
                 if self.touch_flood.life_points <= 0.0:
                     self.incidents.remove(self.touch_flood)
-                    self.touch_flood.sound_effect.stop()
+                    if self.touch_flood.sound_effect is not None:
+                        self.touch_flood.sound_effect.stop()
                     self.touch_flood = None
 
             else:  # elif not self.touch_fire:
