@@ -49,6 +49,14 @@ class Game:
             [self.options.width, self.options.height],
             flags=pygame.FULLSCREEN if self.options.fullscreen else 0
         )
+        start_menu=True
+        img_background = pygame.image.load('assets/menu.jpg').convert()
+        screen.blit(img_background, (0, 0))
+        pygame.display.flip()
+        while start_menu:
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    start_menu=False
 
         img_background = pygame.image.load('assets/background.jpg').convert()
 
