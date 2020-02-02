@@ -131,7 +131,7 @@ class Pirate(pygame.sprite.Sprite):
             self.rect.top = self.initial_pos[1]
             self.respawn_timer = -1
 
-        self.score.value -= 0.01
+        self.score.value -= 0.5
         for incident in self.incidents:
             incident.update()
 
