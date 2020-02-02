@@ -37,6 +37,7 @@ class Game:
         self.c = pygame.time.Clock()
 
     def start(self):
+        pygame.mixer.pre_init(44100, 16, 2, 4096)
         pygame.init()
 
         # Set up the drawing window
@@ -55,6 +56,9 @@ class Game:
             img_background = pygame.image.load('assets/menu.jpg').convert()
             screen.blit(img_background, (0, 0))
             self.draw_resized_screen(screen, screen_resized)
+            pygame.mixer.music.load('assets/music/menu.mp3')
+            pygame.mixer.music.play(-1, 0.0)
+            pygame.mixer.music.set_volume(0.5)
 
             while start_menu:
 
@@ -112,6 +116,9 @@ class Game:
             last_incident_type = None
 
             running = True
+            pygame.mixer.music.load('assets/music/ingame.mp3')
+            pygame.mixer.music.play(-1, 0.0)
+            pygame.mixer.music.set_volume(0.5)
             while running:
                 # Did the user click the window close button?
                 for event in pygame.event.get():
