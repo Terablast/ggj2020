@@ -51,7 +51,7 @@ class Pirate(pygame.sprite.Sprite):
 
         self.is_player_left = is_player_left
 
-        self.touch_fire = False
+        self.touch_fire = None
         self.touch_fire_right = True
 
         self.is_looking_right = True
@@ -102,8 +102,13 @@ class Pirate(pygame.sprite.Sprite):
                 self.vx = min(self.vx + 0.5, 0)
 
         if keys[self.controls['action']]:
-            if self.touch_fire:
+            if self.touch_fire is not None:
                 self.img = self.sprites['water_left'] if self.touch_fire_right else self.sprites['water_right']
+                self.touch_fire.life_points-=1 #trouver quel feu a eteindre et enlever 1 life_point
+                if self.touch_fire.life_points<=0.0:
+                    self.incidents.remove(self.touch_fire)
+                    self.touch_fire=None
+
             elif not self.touch_fire:
                 self.img = self.sprites['punch_right'] if self.is_looking_right else self.sprites['punch_left']
 

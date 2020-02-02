@@ -1,6 +1,7 @@
 import random
 
 import pygame
+from entities.bar import Bar
 
 
 class Incident(pygame.sprite.Sprite):
@@ -68,6 +69,9 @@ class Fire(Incident):
             *groups
         )
 
+        self.life_points = 10
+        self.bar = Bar(self.rect.bottomleft, (100, 20), 10, self.life_points)
+
     def update(self):
         collision_point = self.mask.overlap(
             self.pirate.mask,
@@ -75,12 +79,13 @@ class Fire(Incident):
         )
 
         if collision_point is not None:
-            self.pirate.touch_fire = True
+            self.pirate.touch_fire = self
             if self.pirate.rect.x > self.rect.x + self.rect.width / 2:
                 self.pirate.touch_fire_right = True
             else:
                 self.pirate.touch_fire_right = False
-
+        else:
+            self.pirate.touch_fire = None
 
     def draw(self):
         self.img = Fire.FRAMES[(pygame.time.get_ticks() // 50) % 10]
