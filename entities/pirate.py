@@ -32,7 +32,9 @@ class Pirate(pygame.sprite.Sprite):
             'climb1': pygame.image.load('./assets/pirate/pirate_grimpe1.png').convert_alpha(),
             'climb2': pygame.image.load('./assets/pirate/pirate_grimpe2.png').convert_alpha(),
             'water_right': pygame.image.load('./assets/pirate/water_right.png').convert_alpha(),
-            'water_left': pygame.image.load('./assets/pirate/water_left.png').convert_alpha()
+            'water_left': pygame.image.load('./assets/pirate/water_left.png').convert_alpha(),
+            'bucket_right':pygame.image.load('./assets/pirate/water_right.png').convert_alpha(), #changer quand pret
+            'bucket_left': pygame.image.load('./assets/pirate/water_left.png').convert_alpha()
         }
 
         self.img = self.sprites['normal']
@@ -56,6 +58,8 @@ class Pirate(pygame.sprite.Sprite):
 
         self.touch_fire = None
         self.touch_fire_right = True
+        self.touch_flood = None
+        self.touch_flood_right = True
 
         self.is_looking_right = True
         # initialise le score:
@@ -111,8 +115,14 @@ class Pirate(pygame.sprite.Sprite):
                 if self.touch_fire.life_points <= 0.0:
                     self.incidents.remove(self.touch_fire)
                     self.touch_fire = None
+            if self.touch_flood is not None:
+                self.img = self.sprites['bucket_left'] if self.touch_flood_right else self.sprites['bucket_right']
+                self.touch_flood.life_points -= 1  # trouver quel inondation a ecoper et enlever 1 life_point
+                if self.touch_flood.life_points <= 0.0:
+                    self.incidents.remove(self.touch_flood)
+                    self.touch_flood = None
 
-            elif not self.touch_fire:
+            else: #elif not self.touch_fire:
                 self.img = self.sprites['punch_right'] if self.is_looking_right else self.sprites['punch_left']
 
         self.vy += GRAVITY
@@ -137,6 +147,7 @@ class Pirate(pygame.sprite.Sprite):
         self.score.value = max(0, self.score.value - 0.01 - (len(self.incidents) * 0.1))
 
         self.touch_fire = None
+        self.touch_flood = None
 
         for incident in self.incidents:
             incident.update()

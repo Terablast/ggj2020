@@ -104,20 +104,49 @@ class Fire(Incident):
 
 
 class Flood(Incident):
+    POSITIONS_LEFT = [
+        (194, 807),
+        (500, 807),
+    ]
+
+    POSITIONS_RIGHT = [
+        (1160, 807),
+        (1470, 807),
+    ]
     def __init__(
             self,
             pirate,
             screen,
             *groups
     ):
-        img = pygame.image.load('assets/flood.jpg').convert_alpha()
-
+        img = pygame.transform.scale(pygame.image.load('assets/flood.jpg').convert_alpha(),(300,150))
+        other_floods = [x for x in pirate.incidents if type(x) is Flood]
+        potential_positions = [x for x in (Flood.POSITIONS_LEFT if pirate.is_player_left else Flood.POSITIONS_RIGHT)]
+        for of in other_floods:
+            potential_positions.remove(of.pos)
+        self.mask = pygame.mask.from_surface(pygame.image.load('./assets/fire/mask.png').convert_alpha()) #CHANGER LE MASQUE FLOOD
+        self.pos = random.choice(potential_positions)
         super().__init__(
             img,
             pirate,
             screen,
             *groups
         )
+
+
+    def update(self):
+        collision_point = self.mask.overlap(
+            self.pirate.mask,
+            ((self.pirate.rect.x - self.rect.x), (self.pirate.rect.y - self.rect.y))
+        )
+
+        if collision_point is not None:
+            self.pirate.touch_flood = self
+            if self.pirate.rect.x > self.rect.x + self.rect.width / 2:
+                self.pirate.touch_flood_right = True
+            else:
+                self.pirate.touch_flood_right = False
+
 
 
 class Tear(Incident):
