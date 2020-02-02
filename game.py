@@ -158,6 +158,14 @@ class Game:
 
                         elif Flood.__name__ == incident_type:
                             last_incident_type = Flood.__name__
+                            other_floods_left = [x for x in pirate_left.incidents if type(x) is Flood]
+                            if len(other_floods_left) < len(Flood.POSITIONS_LEFT):
+                                pirate_left.incidents.append(Flood(pirate_left, screen))
+
+                            other_floods_right = [x for x in pirate_right.incidents if type(x) is Flood]
+                            if len(other_floods_right) < len(Flood.POSITIONS_RIGHT):
+                                pirate_right.incidents.append(Flood(pirate_right, screen))
+
 
                 pirate_left.update(
                     pygame.key.get_pressed(),
