@@ -1,5 +1,6 @@
-from game import *
 import argparse
+
+from game import *
 
 
 def main():

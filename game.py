@@ -1,8 +1,7 @@
 import datetime
 
-import pygame
-
 from entities.boats import Boats
+from entities.incident import *
 from entities.ladders import Ladders
 from entities.pirate import Pirate
 
@@ -23,6 +22,9 @@ class GameOptions:
 
 
 class Game:
+    INCIDENT_CHANCE = 0.4
+    INCIDENT_DELAY = 1
+
     def __init__(
             self,
             game_options: GameOptions
@@ -85,7 +87,8 @@ class Game:
             }
         )
 
-        last_event = datetime.datetime.now()
+        last_incident = datetime.datetime.now()
+        last_incident_type = None
 
         running = True
         while running:
@@ -100,11 +103,42 @@ class Game:
 
             boats.update()
 
-            since_last_event = datetime.datetime.now() - last_event
+            since_last_incident = datetime.datetime.now() - last_incident
 
-            if (since_last_event.seconds > 10):
-                last_event = datetime.datetime.now()
-                # TODO Faire apparaitre les events pour les deux joueurs!
+            if since_last_incident.seconds >= Game.INCIDENT_DELAY:
+                last_incident = datetime.datetime.now()
+
+                if random.random() <= Game.INCIDENT_CHANCE:
+                    # IT'S HAPPENING
+
+                    potential_incident_types = [
+                        Fire.__name__,
+                        Flood.__name__
+                    ]
+
+                    if last_incident_type is not None:
+                        potential_incident_types.remove(last_incident_type)
+
+                    incident_type = random.choice(potential_incident_types)
+
+                    if Fire.__name__ == incident_type:
+                        print('FIRE')
+                        last_incident_type = Fire.__name__
+
+                        other_fires_left = [x for x in pirate_left.incidents if type(x) is Fire]
+
+                        if len(other_fires_left) < len(Fire.POSITIONS_LEFT):
+                            pirate_left.incidents.append(Fire(pirate_left, screen))
+
+                        # pirate_right.incidents.append(Fire(pirate_right, screen))
+
+                        pass  # Lightning has struck: FIRE!
+                    elif Flood.__name__ == incident_type:
+                        print('FLOOD')
+                        last_incident_type = Flood.__name__
+                        pass  # The hull broke: FLOOD!
+                else:
+                    print('the calm before the storm')
 
             pirate_left.update(
                 pygame.key.get_pressed(),

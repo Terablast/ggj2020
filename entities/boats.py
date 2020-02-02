@@ -19,6 +19,3 @@ class Boats(pygame.sprite.Sprite):
     def draw(self):
         # self.screen.blit(self.img, self.rect)
         pass
-
-
-

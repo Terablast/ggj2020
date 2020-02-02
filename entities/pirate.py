@@ -22,7 +22,9 @@ class Pirate(pygame.sprite.Sprite):
 
         self.sprites = {
             'normal': pygame.image.load('./assets/pirate.png').convert_alpha(),
-            'crouch': pygame.image.load('./assets/pirate_crouch.png').convert_alpha()
+            'crouch': pygame.image.load('./assets/pirate_crouch.png').convert_alpha(),
+            'climb1': pygame.image.load('./assets/pirate_grimpe1.png').convert_alpha(),
+            'climb2': pygame.image.load('./assets/pirate_grimpe2.png').convert_alpha()
         }
 
         self.img = self.sprites['normal']
@@ -42,15 +44,15 @@ class Pirate(pygame.sprite.Sprite):
         self.initial_pos = pos
         self.respawn_timer = -1
 
-        self.imminent = True  # True si un incident peut arriver (active la generation aleatoire d'un incident)
         self.is_player_left = is_player_left
-        self.event_list = []
+
         #initialise le score:
         if is_player_left:
             scorex=50
         else:
             scorex=1750
         self.score=Score((scorex,50))
+        self.incidents = []
 
     def update(
             self,
@@ -59,17 +61,22 @@ class Pirate(pygame.sprite.Sprite):
     ):
         on_ladder = pygame.sprite.collide_mask(self, ladders) is not None
 
-        if keys[self.controls['up']] and (
-                not self.jumping
-                or on_ladder
-        ):
-            self.vy += JUMP_VELOCITY
+        if keys[self.controls['up']]:
+            if on_ladder:
+                self.vy = JUMP_VELOCITY / 5
+            elif not self.jumping:
+                self.vy += JUMP_VELOCITY
 
         if keys[self.controls['right']]:
             self.vx = min(self.vx + 1, MAX_SPEED)
 
         if keys[self.controls['down']]:
             self.img = self.sprites['crouch']
+        elif on_ladder and keys[self.controls['up']]:
+            if (pygame.time.get_ticks() // 250) % 2 == 0:
+                self.img = self.sprites['climb1']
+            else:
+                self.img = self.sprites['climb2']
         else:
             self.img = self.sprites['normal']
 
@@ -134,32 +141,8 @@ class Pirate(pygame.sprite.Sprite):
             self.jumping = True
 
     def draw(self):
+        for incident in self.incidents:
+            incident.draw()
+
         self.score.draw(math.floor(self.score.value),self.score.pos,self.screen)
         self.screen.blit(self.img, self.rect)
-
-'''
-    def new_event_check(self):  # retourne true si un evenement arrive
-        if self.imminent:
-            if random.random() < 60 * 0.05:  # ???? GameOptions.c.get_fps()
-                self.imminent = False
-                return True
-            else:
-                return False
-
-        else:
-            return False
-
-    def add_event(self):
-        N = math.ceil(random.random() * 8)
-        for i in self.event_list:
-            if abs(
-                    i.label_number - N) < 0.01:  # si meme numero: si on essaie de creer un event qui exite deja. dif pour eviter comparaison entre 1.0 et 1 etc...
-                N += 1
-
-        if N == 1 or N == 2:
-            self.event_list.append(Tear(self.is_player_left, N))
-        if N == 3 or N == 4 or N == 5 or N == 6:
-            self.event_list.append(Fire(self.is_player_left, N))
-        if N == 7 or N == 8:
-            self.event_list.append(Flood(self.is_player_left, N))
-'''

@@ -1,7 +1,8 @@
-import pygame as pg
 import sys
 
+import pygame as pg
 from pygame.locals import *
+
 import settings as st
 
 
@@ -198,24 +199,24 @@ class Hero:
     def contactTete(self, block):
         # cogne tete si tete_y ds bloc                       et          coin haut gauche                        ou               haut droie est dedans
         return (block.y < self.get_top() < block.y + st.TILESIZE) and (
-                    (block.x < self.get_left() < block.x + st.TILESIZE) or (
-                        block.x < self.get_right() < block.x + st.TILESIZE))
+                (block.x < self.get_left() < block.x + st.TILESIZE) or (
+                block.x < self.get_right() < block.x + st.TILESIZE))
 
     def contactPieds(self, block):
         return (block.y < self.get_bottom() < block.y + st.TILESIZE) and (
-                    (block.x < self.get_left() < block.x + st.TILESIZE) or (
-                        block.x < self.get_right() < block.x + st.TILESIZE))
+                (block.x < self.get_left() < block.x + st.TILESIZE) or (
+                block.x < self.get_right() < block.x + st.TILESIZE))
 
     def contactGauche(self, block):
         return (block.x < self.get_left() < block.x + st.TILESIZE) and (
-                    (block.y < self.get_top() < block.y + st.TILESIZE) or (
-                        block.y < self.get_bottom() < block.y + st.TILESIZE) or (
+                (block.y < self.get_top() < block.y + st.TILESIZE) or (
+                block.y < self.get_bottom() < block.y + st.TILESIZE) or (
                     (block.y < 0.5 * (self.get_bottom() + self.get_top()) < block.y + st.TILESIZE)))
 
     def contactDroite(self, block):
         return (block.x < self.get_right() < block.x + st.TILESIZE) and (
-                    (block.y < self.get_top() < block.y + st.TILESIZE) or (
-                        block.y < self.get_bottom() < block.y + st.TILESIZE) or (
+                (block.y < self.get_top() < block.y + st.TILESIZE) or (
+                block.y < self.get_bottom() < block.y + st.TILESIZE) or (
                     (block.y < 0.5 * (self.get_bottom() + self.get_top()) < block.y + st.TILESIZE)))
 
     # Getters

@@ -12,4 +12,3 @@ class Ladders(pygame.sprite.Sprite):
 
         self.rect.left = pos[0]
         self.rect.top = pos[1]
-
