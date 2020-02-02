@@ -6,6 +6,8 @@ from entities.incident import *
 from entities.ladders import Ladders
 from entities.pirate import Pirate
 
+import sys
+
 
 class GameOptions:
     def __init__(
@@ -46,18 +48,34 @@ class Game:
         pygame.init()
 
         # Set up the drawing window
-        screen = pygame.display.set_mode(
-            [self.options.width, self.options.height],
-            flags=pygame.FULLSCREEN if self.options.fullscreen else 0
-        )
-        start_menu=True
+        # pygame.display.set_mode(
+        #   [self.options.width, self.options.height],
+        #    flags=pygame.FULLSCREEN if self.options.fullscreen else 0
+        # )
+        screen_resized = pygame.display.set_mode((self.options.width, self.options.height),
+                                         pygame.HWSURFACE | pygame.DOUBLEBUF | pygame.RESIZABLE)
+        screen = pygame.Surface((1920,1080),)
+        start_menu = True
         img_background = pygame.image.load('assets/menu.jpg').convert()
         screen.blit(img_background, (0, 0))
-        pygame.display.flip()
+
         while start_menu:
+
             for event in pygame.event.get():
+                if event.type == pygame.QUIT or (
+                        event.type == pygame.KEYDOWN and
+                        event.key == pygame.K_F4 and
+                        event.mod & pygame.KMOD_ALT != 0):
+                    running = False
+
+                if event.type == pygame.VIDEORESIZE:
+                    screen_resized = pygame.display.set_mode(event.dict['size'],
+                                                             pygame.HWSURFACE | pygame.DOUBLEBUF | pygame.RESIZABLE)
+                    self.options.width, self.options.height = screen_resized.get_size()
+                    self.printFinalScreen(screen,screen_resized)
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                    start_menu=False
+                    start_menu = False
+            pygame.display.flip()
 
         img_background = pygame.image.load('assets/background.jpg').convert()
 
@@ -100,9 +118,13 @@ class Game:
                 if event.type == pygame.QUIT or (
                         event.type == pygame.KEYDOWN and
                         event.key == pygame.K_F4 and
-                        event.mod & pygame.KMOD_ALT != 0
-                ):
+                        event.mod & pygame.KMOD_ALT != 0):
                     running = False
+
+                if event.type == pygame.VIDEORESIZE:
+                    screen_resized = pygame.display.set_mode(event.dict['size'],
+                                                     pygame.HWSURFACE | pygame.DOUBLEBUF | pygame.RESIZABLE)
+                    self.options.width, self.options.height = screen_resized.get_size()
 
             boats.update()
 
@@ -160,7 +182,7 @@ class Game:
             boats.draw()
             pirate_left.draw()
             pirate_right.draw()
-
+            self.printFinalScreen(screen, screen_resized)
             # Flip the display
             pygame.display.flip()
 
@@ -169,3 +191,7 @@ class Game:
 
         # Done! Time to quit.
         pygame.quit()
+
+    def printFinalScreen(self, screen, screen_resized):
+        # On garde DISPLAYSURFcopy à la taille originale, resize sur DISPLAYSURF puis affiche
+        screen_resized.blit(pygame.transform.scale(screen, (self.options.width, self.options.height)), (0, 0))
