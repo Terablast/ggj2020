@@ -26,8 +26,11 @@ class Incident(pygame.sprite.Sprite):
         self.rect.left = self.pos[0]
         self.rect.top = self.pos[1]
 
+        self.life_points = 1000
+        self.bar = Bar(self.rect.bottomleft, (100, 20), 1000, self.life_points)
     def draw(self):
         self.screen.blit(self.img, self.rect)
+        self.bar.draw(self.rect.bottomleft,(self.rect.width,self.rect.height),1000,self.life_points,self.screen)
 
 
 class Fire(Incident):
@@ -68,9 +71,6 @@ class Fire(Incident):
             screen,
             *groups
         )
-
-        self.life_points = 10
-        self.bar = Bar(self.rect.bottomleft, (100, 20), 10, self.life_points)
 
     def update(self):
         collision_point = self.mask.overlap(
