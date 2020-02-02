@@ -82,6 +82,14 @@ class Fire(Incident):
         self.mask = pygame.mask.from_surface(pygame.image.load('./assets/fire/mask.png').convert_alpha())
         self.pos = random.choice(potential_positions)
 
+        #effet sonore:
+        self.sound_effect_thunder = pygame.mixer.Sound('assets/music/thunder.wav')
+        self.sound_effect_thunder.set_volume(0.25)
+        self.sound_effect_thunder.play()
+        self.sound_effect = pygame.mixer.Sound('assets/music/fire.wav')
+        self.sound_effect.set_volume(0.08)
+        self.sound_effect.play(-1)
+
         super().__init__(
             img,
             pirate,
@@ -139,8 +147,13 @@ class Flood(Incident):
         for of in other_floods:
             potential_positions.remove(of.pos)
         self.mask = pygame.mask.from_surface(
-            pygame.image.load('./assets/flood/mask.png').convert_alpha())  # CHANGER LE MASQUE FLOOD
+            pygame.image.load('./assets/flood/mask.png').convert_alpha())
         self.pos = random.choice(potential_positions)
+
+        #effet sonore:
+        self.sound_effect = pygame.mixer.Sound('assets/music/water.wav')
+        self.sound_effect.set_volume(0.08)
+        self.sound_effect.play(-1)
         super().__init__(
             img,
             pirate,

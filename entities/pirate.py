@@ -148,6 +148,7 @@ class Pirate(pygame.sprite.Sprite):
                 self.img = self.sprites['water_left'] if self.touch_fire_right else self.sprites['water_right']
                 self.touch_fire.life_points -= 1  # trouver quel feu a eteindre et enlever 1 life_point
                 if self.touch_fire.life_points <= 0.0:
+                    self.touch_fire.sound_effect.stop()
                     self.incidents.remove(self.touch_fire)
                     self.touch_fire = None
             if self.touch_flood is not None:
@@ -155,6 +156,7 @@ class Pirate(pygame.sprite.Sprite):
                 self.touch_flood.life_points -= 1  # trouver quel inondation a ecoper et enlever 1 life_point
                 if self.touch_flood.life_points <= 0.0:
                     self.incidents.remove(self.touch_flood)
+                    self.touch_flood.sound_effect.stop()
                     self.touch_flood = None
 
             else: #elif not self.touch_fire:

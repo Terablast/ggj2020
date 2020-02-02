@@ -58,7 +58,7 @@ class Game:
             self.draw_resized_screen(screen, screen_resized)
             pygame.mixer.music.load('assets/music/menu.mp3')
             pygame.mixer.music.play(-1, 0.0)
-            pygame.mixer.music.set_volume(0.5)
+            pygame.mixer.music.set_volume(0.8)
 
             while start_menu:
 
