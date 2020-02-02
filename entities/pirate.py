@@ -20,14 +20,14 @@ class Pirate(pygame.sprite.Sprite):
         self.screen = screen
 
         self.sprites = {
-            'normal': pygame.image.load('./assets/pirate.png').convert_alpha(),
-            'crouch': pygame.image.load('./assets/pirate_crouch.png').convert_alpha(),
-            'climb1': pygame.image.load('./assets/pirate_grimpe1.png').convert_alpha(),
-            'climb2': pygame.image.load('./assets/pirate_grimpe2.png').convert_alpha()
+            'normal': pygame.image.load('./assets/pirate/pirate.png').convert_alpha(),
+            'crouch': pygame.image.load('./assets/pirate/pirate_crouch.png').convert_alpha(),
+            'climb1': pygame.image.load('./assets/pirate/pirate_grimpe1.png').convert_alpha(),
+            'climb2': pygame.image.load('./assets/pirate/pirate_grimpe2.png').convert_alpha()
         }
 
         self.img = self.sprites['normal']
-        self.mask = pygame.mask.from_surface(pygame.image.load('./assets/pirate_mask.png').convert_alpha())
+        self.mask = pygame.mask.from_surface(pygame.image.load('./assets/pirate/pirate_mask.png').convert_alpha())
         self.rect: pygame.Rect = self.img.get_rect()
 
         self.controls = controls
