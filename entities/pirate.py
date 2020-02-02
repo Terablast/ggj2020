@@ -172,7 +172,7 @@ class Pirate(pygame.sprite.Sprite):
                     self.touch_fire.sound_effect.stop()
                     self.incidents.remove(self.touch_fire)
                     self.touch_fire = None
-            if self.touch_flood is not None:
+            elif self.touch_flood is not None:
                 self.img = self.sprites[
                     'bucket_left' + ('_scorbut' if self.has_scurvy() else '')] if self.touch_flood_right else \
                 self.sprites['bucket_right' + ('_scorbut' if self.has_scurvy() else '')]
