@@ -118,7 +118,7 @@ class Game:
             running = True
             pygame.mixer.music.load('assets/music/ingame.mp3')
             pygame.mixer.music.play(-1, 0.0)
-            pygame.mixer.music.set_volume(0.5)
+            pygame.mixer.music.set_volume(0.7)
             while running:
                 # Did the user click the window close button?
                 for event in pygame.event.get():

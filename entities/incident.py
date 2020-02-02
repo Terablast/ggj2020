@@ -83,10 +83,10 @@ class Fire(Incident):
 
         #effet sonore:
         self.sound_effect_thunder = pygame.mixer.Sound('assets/music/thunder.wav')
-        self.sound_effect_thunder.set_volume(0.25)
+        self.sound_effect_thunder.set_volume(0.10)
         self.sound_effect_thunder.play()
         self.sound_effect = pygame.mixer.Sound('assets/music/fire.wav')
-        self.sound_effect.set_volume(0.08)
+        self.sound_effect.set_volume(0.02)
         self.sound_effect.play(-1)
 
         self.life_points = 100
@@ -153,7 +153,7 @@ class Flood(Incident):
 
         #effet sonore:
         self.sound_effect = pygame.mixer.Sound('assets/music/water.wav')
-        self.sound_effect.set_volume(0.08)
+        self.sound_effect.set_volume(0.02)
         self.sound_effect.play(-1)
 
         self.life_points = 100
