@@ -73,6 +73,7 @@ class Game:
                 'right': pygame.K_d,
                 'down': pygame.K_s,
                 'left': pygame.K_a,
+                'action': pygame.K_SPACE
             }
         )
 
@@ -85,6 +86,7 @@ class Game:
                 'right': pygame.K_RIGHT,
                 'down': pygame.K_DOWN,
                 'left': pygame.K_LEFT,
+                'action': pygame.K_l,
             }
         )
 
