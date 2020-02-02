@@ -1,6 +1,7 @@
 import pygame
 import math
 from entities.score import Score
+
 MAX_SPEED = 4
 JUMP_VELOCITY = -8
 GRAVITY = 0.25
@@ -24,7 +25,9 @@ class Pirate(pygame.sprite.Sprite):
             'normal': pygame.image.load('./assets/pirate.png').convert_alpha(),
             'crouch': pygame.image.load('./assets/pirate_crouch.png').convert_alpha(),
             'climb1': pygame.image.load('./assets/pirate_grimpe1.png').convert_alpha(),
-            'climb2': pygame.image.load('./assets/pirate_grimpe2.png').convert_alpha()
+            'climb2': pygame.image.load('./assets/pirate_grimpe2.png').convert_alpha(),
+            'punch_right': pygame.image.load('./assets/punch_right.png').convert_alpha(),
+            'punch_left': pygame.image.load('./assets/punch_left.png').convert_alpha()
         }
 
         self.img = self.sprites['normal']
@@ -46,12 +49,13 @@ class Pirate(pygame.sprite.Sprite):
 
         self.is_player_left = is_player_left
 
-        #initialise le score:
+        self.is_looking_right = True
+        # initialise le score:
         if is_player_left:
-            scorex=50
+            scorex = 50
         else:
-            scorex=1750
-        self.score=Score((scorex,50))
+            scorex = 1750
+        self.score = Score((scorex, 50))
         self.incidents = []
 
     def update(
@@ -69,6 +73,7 @@ class Pirate(pygame.sprite.Sprite):
 
         if keys[self.controls['right']]:
             self.vx = min(self.vx + 1, MAX_SPEED)
+            self.is_looking_right = True
 
         if keys[self.controls['down']]:
             self.img = self.sprites['crouch']
@@ -82,6 +87,7 @@ class Pirate(pygame.sprite.Sprite):
 
         if keys[self.controls['left']]:
             self.vx = max(self.vx - 1, -MAX_SPEED)
+            self.is_looking_right = False
 
         if not keys[self.controls['left']] and not keys[self.controls['right']]:
             # Lorsqu'on ne tient pas gauche ni droite, on perds notre momentum horizontal
@@ -89,6 +95,9 @@ class Pirate(pygame.sprite.Sprite):
                 self.vx = max(self.vx - 0.5, 0)
             elif self.vx < 0:
                 self.vx = min(self.vx + 0.5, 0)
+
+        if keys[self.controls['action']]:
+            self.img = self.sprites['punch_right'] if self.is_looking_right else self.sprites['punch_left']
 
         self.vy += GRAVITY
 
@@ -109,7 +118,7 @@ class Pirate(pygame.sprite.Sprite):
             self.rect.top = self.initial_pos[1]
             self.respawn_timer = -1
 
-        self.score.value-=0.01
+        self.score.value -= 0.01
 
     def collide(self, mask):
         dx = mask.overlap_area(self.mask, (self.rect.x + 1, self.rect.y)) \
@@ -144,5 +153,5 @@ class Pirate(pygame.sprite.Sprite):
         for incident in self.incidents:
             incident.draw()
 
-        self.score.draw(math.floor(self.score.value),self.score.pos,self.screen)
+        self.score.draw(math.floor(self.score.value), self.score.pos, self.screen)
         self.screen.blit(self.img, self.rect)
