@@ -23,8 +23,8 @@ class GameOptions:
 
 
 class Game:
-    INCIDENT_CHANCE = 0.4
-    INCIDENT_DELAY = 1
+    INCIDENT_CHANCE = 0.5
+    INCIDENT_DELAY = 4
 
     def __init__(
             self,
@@ -78,6 +78,7 @@ class Game:
                         self.draw_resized_screen(screen, screen_resized)
                     if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                         start_menu = False
+
                 pygame.display.flip()
 
             img_background = pygame.image.load('assets/background.jpg').convert()
@@ -121,12 +122,26 @@ class Game:
             pygame.mixer.music.set_volume(0.5)
             while running:
                 # Did the user click the window close button?
-                for event in pygame.event.get():
+                events = pygame.event.get()
+
+                for event in events:
                     if event.type == pygame.QUIT or (
                             event.type == pygame.KEYDOWN and
                             event.key == pygame.K_F4 and
                             event.mod & pygame.KMOD_ALT != 0):
                         running = False
+                        for bleh in pirate_left.incidents:
+                            try:
+                                bleh.sound_effect.stop()
+                            except AttributeError:
+                                pass
+
+                        for bleh in pirate_right.incidents:
+                            try:
+                                bleh.sound_effect.stop()
+                            except AttributeError:
+                                pass
+
 
                     if event.type == pygame.VIDEORESIZE:
                         screen_resized = pygame.display.set_mode(event.dict['size'],
@@ -207,6 +222,13 @@ class Game:
                 pirate_left.collide(boats.mask)
                 pirate_right.collide(boats.mask)
 
+                for event in events:
+                    if event.type == pygame.KEYDOWN:
+                        if event.key == pirate_left.controls['action']:
+                            pirate_left.verify_punch(pygame.key.get_pressed(), pirate_right)
+                        elif event.key == pirate_right.controls['action']:
+                            pirate_right.verify_punch(pygame.key.get_pressed(), pirate_left)
+
                 screen.blit(img_background, (0, 0))
 
                 boats.draw()
@@ -214,7 +236,7 @@ class Game:
                 pirate_right.draw()
 
                 screen.blit(img_rain, (0, -1080 + (
-                  pygame.time.get_ticks() % 1080
+                        pygame.time.get_ticks() % 1080
                 )))
 
                 self.draw_resized_screen(screen, screen_resized)
@@ -227,6 +249,18 @@ class Game:
                 if pirate_left.score.value <= 0.0:
                     running = False
                     right_win_go_screen = True
+
+                    for bleh in pirate_left.incidents:
+                        try:
+                            bleh.sound_effect.stop()
+                        except AttributeError:
+                            pass
+
+                    for bleh in pirate_right.incidents:
+                        try:
+                            bleh.sound_effect.stop()
+                        except AttributeError:
+                            pass
 
                     img_background = pygame.image.load('assets/player_right_win.jpg').convert()
                     screen.blit(img_background, (0, 0))
@@ -257,6 +291,18 @@ class Game:
                 elif pirate_right.score.value <= 0.0:
                     running = False
                     left_win_go_screen = True
+
+                    for bleh in pirate_left.incidents:
+                        try:
+                            bleh.sound_effect.stop()
+                        except AttributeError:
+                            pass
+
+                    for bleh in pirate_right.incidents:
+                        try:
+                            bleh.sound_effect.stop()
+                        except AttributeError:
+                            pass
 
                     img_background = pygame.image.load('assets/player_left_win.jpg').convert()
                     screen.blit(img_background, (0, 0))

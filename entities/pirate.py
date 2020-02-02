@@ -255,3 +255,18 @@ class Pirate(pygame.sprite.Sprite):
 
     def has_scurvy(self):
         return Scurvy in [type(x) for x in self.incidents]
+
+    def verify_punch(self, keys, enemy):
+        x1 = enemy.mask.overlap_area(self.mask, (self.rect.x - enemy.rect.x + 1, self.rect.y - enemy.rect.y))
+        x2 = enemy.mask.overlap_area(self.mask, (self.rect.x - enemy.rect.x - 1, self.rect.y - enemy.rect.y))
+
+        dx = x1 - x2
+
+        if dx == 0:
+            return
+
+        if dx > 0 and self.is_looking_right:
+            enemy.vx += 20
+
+        if dx < 0 and not self.is_looking_right:
+            enemy.vx -= 20
