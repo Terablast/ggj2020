@@ -1,5 +1,6 @@
 import datetime
 
+from entities.bar import Bar
 from entities.boats import Boats
 from entities.incident import *
 from entities.ladders import Ladders
