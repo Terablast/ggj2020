@@ -27,10 +27,15 @@ class Incident(pygame.sprite.Sprite):
         self.rect.left = self.pos[0]
         self.rect.top = self.pos[1]
 
-        self.bar_size=(100, 10)
+        self.bar_size = (self.rect.width, 10)
         self.life_points = 100
-        #self.rect.bottomleft
-        self.bar = Bar((self.rect.bottomleft[0]+70,self.rect.bottomleft[1]+5), self.bar_size, 1000, self.life_points)
+
+        self.bar = Bar(
+            (self.rect.bottomleft),
+            self.bar_size,
+            1000,
+            self.life_points
+        )
 
     def draw(self):
         self.screen.blit(self.img, self.rect)
@@ -97,34 +102,44 @@ class Fire(Incident):
             else:
                 self.pirate.touch_fire_right = False
 
-
     def draw(self):
         self.img = Fire.FRAMES[(pygame.time.get_ticks() // 50) % 10]
         super().draw()
 
 
 class Flood(Incident):
+    FRAMES = []
+
     POSITIONS_LEFT = [
-        (194, 807),
-        (500, 807),
+        (284, 910),
+        (600, 910),
     ]
 
     POSITIONS_RIGHT = [
-        (1160, 807),
-        (1470, 807),
+        (1272, 910),
+        (1590, 910),
     ]
+
     def __init__(
             self,
             pirate,
             screen,
             *groups
     ):
-        img = pygame.transform.scale(pygame.image.load('assets/flood.jpg').convert_alpha(),(300,150))
+        if len(Flood.FRAMES) == 0:
+            for i in range(1, 11):
+                Flood.FRAMES.append(
+                    pygame.image.load('./assets/flood/frame (' + str(i) + ').png').convert_alpha()
+                )
+
+        img = Flood.FRAMES[0]
+
         other_floods = [x for x in pirate.incidents if type(x) is Flood]
         potential_positions = [x for x in (Flood.POSITIONS_LEFT if pirate.is_player_left else Flood.POSITIONS_RIGHT)]
         for of in other_floods:
             potential_positions.remove(of.pos)
-        self.mask = pygame.mask.from_surface(pygame.image.load('./assets/fire/mask.png').convert_alpha()) #CHANGER LE MASQUE FLOOD
+        self.mask = pygame.mask.from_surface(
+            pygame.image.load('./assets/flood/mask.png').convert_alpha())  # CHANGER LE MASQUE FLOOD
         self.pos = random.choice(potential_positions)
         super().__init__(
             img,
@@ -132,7 +147,6 @@ class Flood(Incident):
             screen,
             *groups
         )
-
 
     def update(self):
         collision_point = self.mask.overlap(
@@ -147,6 +161,9 @@ class Flood(Incident):
             else:
                 self.pirate.touch_flood_right = False
 
+    def draw(self):
+        self.img = Flood.FRAMES[(pygame.time.get_ticks() // 50) % 10]
+        super().draw()
 
 
 class Tear(Incident):

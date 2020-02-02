@@ -33,7 +33,7 @@ class Pirate(pygame.sprite.Sprite):
             'climb2': pygame.image.load('./assets/pirate/pirate_grimpe2.png').convert_alpha(),
             'water_right': pygame.image.load('./assets/pirate/water_right.png').convert_alpha(),
             'water_left': pygame.image.load('./assets/pirate/water_left.png').convert_alpha(),
-            'bucket_right':pygame.image.load('./assets/pirate/water_right.png').convert_alpha(), #changer quand pret
+            'bucket_right':pygame.image.load('./assets/pirate/water_right.png').convert_alpha(),
             'bucket_left': pygame.image.load('./assets/pirate/water_left.png').convert_alpha()
         }
 
