@@ -144,7 +144,9 @@ class Game:
                     if random.random() <= Game.INCIDENT_CHANCE:
                         potential_incident_types = [
                             Fire.__name__,
-                            Flood.__name__
+                            Flood.__name__,
+                            Scurvy.__name__,
+                            Tear.__name__,
                         ]
 
                         if last_incident_type is not None:
@@ -173,6 +175,25 @@ class Game:
                             if len(other_floods_right) < len(Flood.POSITIONS_RIGHT):
                                 pirate_right.incidents.append(Flood(pirate_right, screen))
 
+                        elif Scurvy.__name__ == incident_type:
+                            last_incident_type = Scurvy.__name__
+                            other_oranges_left = [x for x in pirate_left.incidents if type(x) is Scurvy]
+                            if len(other_oranges_left) < len(Scurvy.POSITIONS_LEFT):
+                                pirate_left.incidents.append(Scurvy(pirate_left, screen))
+
+                            other_oranges_right = [x for x in pirate_right.incidents if type(x) is Scurvy]
+                            if len(other_oranges_right) < len(Scurvy.POSITIONS_RIGHT):
+                                pirate_right.incidents.append(Scurvy(pirate_right, screen))
+
+                        elif Tear.__name__ == incident_type:
+                            last_incident_type = Tear.__name__
+                            other_tears_left = [x for x in pirate_left.incidents if type(x) is Tear]
+                            if len(other_tears_left) < len(Tear.POSITIONS_LEFT):
+                                pirate_left.incidents.append(Tear(pirate_left, screen))
+
+                            other_tears_left = [x for x in pirate_right.incidents if type(x) is Tear]
+                            if len(other_tears_left) < len(Tear.POSITIONS_RIGHT):
+                                pirate_right.incidents.append(Tear(pirate_right, screen))
 
                 pirate_left.update(
                     pygame.key.get_pressed(),
@@ -192,9 +213,9 @@ class Game:
                 pirate_left.draw()
                 pirate_right.draw()
 
-                # screen.blit(img_rain, (0, -1080 + (
-                #   pygame.time.get_ticks() % 1080
-                # )))
+                screen.blit(img_rain, (0, -1080 + (
+                  pygame.time.get_ticks() % 1080
+                )))
 
                 self.draw_resized_screen(screen, screen_resized)
                 # Flip the display

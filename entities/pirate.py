@@ -2,6 +2,7 @@ import math
 
 import pygame
 
+from entities.incident import Scurvy
 from entities.score import Score
 
 MAX_X_SPEED = 7
@@ -35,18 +36,27 @@ class Pirate(pygame.sprite.Sprite):
                 'climb2': pygame.image.load('./assets/pirate/red/pirate_climb2.png').convert_alpha(),
                 'water_right': pygame.image.load('./assets/pirate/red/water_right.png').convert_alpha(),
                 'water_left': pygame.image.load('./assets/pirate/red/water_left.png').convert_alpha(),
-                'bucket_right':pygame.image.load('./assets/pirate/red/ecope_right.png').convert_alpha(),
+                'bucket_right': pygame.image.load('./assets/pirate/red/ecope_right.png').convert_alpha(),
                 'bucket_left': pygame.image.load('./assets/pirate/red/ecope_left.png').convert_alpha(),
-                'punch_right_scorbut': pygame.image.load('./assets/pirate/red/scorbut/punch_right_scorbut.png').convert_alpha(),
-                'punch_left_scorbut': pygame.image.load('./assets/pirate/red/scorbut/punch_left_scorbut.png').convert_alpha(),
+                'punch_right_scorbut': pygame.image.load(
+                    './assets/pirate/red/scorbut/punch_right_scorbut.png').convert_alpha(),
+                'punch_left_scorbut': pygame.image.load(
+                    './assets/pirate/red/scorbut/punch_left_scorbut.png').convert_alpha(),
                 'normal_scorbut': pygame.image.load('./assets/pirate/red/scorbut/pirate_scorbut.png').convert_alpha(),
-                'crouch_scorbut': pygame.image.load('./assets/pirate/red/scorbut/pirate_crouch_scorbut.png').convert_alpha(),
-                'climb1_scorbut': pygame.image.load('./assets/pirate/red/scorbut/pirate_climb1_scorbut.png').convert_alpha(),
-                'climb2_scorbut': pygame.image.load('./assets/pirate/red/scorbut/pirate_climb2_scorbut.png').convert_alpha(),
-                'water_right_scorbut': pygame.image.load('./assets/pirate/red/scorbut/water_right_scorbut.png').convert_alpha(),
-                'water_left_scorbut': pygame.image.load('./assets/pirate/red/scorbut/water_left_scorbut.png').convert_alpha(),
-                'bucket_right_scorbut': pygame.image.load('./assets/pirate/red/scorbut/ecope_right_scorbut.png').convert_alpha(),
-                'bucket_left_scorbut': pygame.image.load('./assets/pirate/red/scorbut/ecope_left_scorbut.png').convert_alpha()
+                'crouch_scorbut': pygame.image.load(
+                    './assets/pirate/red/scorbut/pirate_crouch_scorbut.png').convert_alpha(),
+                'climb1_scorbut': pygame.image.load(
+                    './assets/pirate/red/scorbut/pirate_climb1_scorbut.png').convert_alpha(),
+                'climb2_scorbut': pygame.image.load(
+                    './assets/pirate/red/scorbut/pirate_climb2_scorbut.png').convert_alpha(),
+                'water_right_scorbut': pygame.image.load(
+                    './assets/pirate/red/scorbut/water_right_scorbut.png').convert_alpha(),
+                'water_left_scorbut': pygame.image.load(
+                    './assets/pirate/red/scorbut/water_left_scorbut.png').convert_alpha(),
+                'bucket_right_scorbut': pygame.image.load(
+                    './assets/pirate/red/scorbut/ecope_right_scorbut.png').convert_alpha(),
+                'bucket_left_scorbut': pygame.image.load(
+                    './assets/pirate/red/scorbut/ecope_left_scorbut.png').convert_alpha()
             }
         else:
             self.sprites = {
@@ -60,20 +70,31 @@ class Pirate(pygame.sprite.Sprite):
                 'water_left': pygame.image.load('./assets/pirate/blue/water_left_blue.png').convert_alpha(),
                 'bucket_right': pygame.image.load('./assets/pirate/blue/water_right_blue.png').convert_alpha(),
                 'bucket_left': pygame.image.load('./assets/pirate/blue/water_left_blue.png').convert_alpha(),
-                'punch_right_scorbut': pygame.image.load('./assets/pirate/blue/scorbut/punch_right_blue_scorbut.png').convert_alpha(),
-                'punch_left_scorbut': pygame.image.load('./assets/pirate/blue/scorbut/punch_left_blue_scorbut.png').convert_alpha(),
-                'normal_scorbut': pygame.image.load('./assets/pirate/blue/scorbut/pirate_blue_scorbut.png').convert_alpha(),
-                'crouch_scorbut': pygame.image.load('./assets/pirate/blue/scorbut/pirate_crouch_blue_scorbut.png').convert_alpha(),
-                'climb1_scorbut': pygame.image.load('./assets/pirate/blue/scorbut/pirate_climb1_blue_scorbut.png').convert_alpha(),
-                'climb2_scorbut': pygame.image.load('./assets/pirate/blue/scorbut/pirate_climb2_blue_scorbut.png').convert_alpha(),
-                'water_right_scorbut': pygame.image.load('./assets/pirate/blue/scorbut/water_right_blue_scorbut.png').convert_alpha(),
-                'water_left_scorbut': pygame.image.load('./assets/pirate/blue/scorbut/water_left_blue_scorbut.png').convert_alpha(),
-                'bucket_right_scorbut': pygame.image.load('./assets/pirate/blue/scorbut/water_right_blue_scorbut.png').convert_alpha(),
-                'bucket_left_scorbut': pygame.image.load('./assets/pirate/blue/scorbut/water_left_blue_scorbut.png').convert_alpha()
+                'punch_right_scorbut': pygame.image.load(
+                    './assets/pirate/blue/scorbut/punch_right_blue_scorbut.png').convert_alpha(),
+                'punch_left_scorbut': pygame.image.load(
+                    './assets/pirate/blue/scorbut/punch_left_blue_scorbut.png').convert_alpha(),
+                'normal_scorbut': pygame.image.load(
+                    './assets/pirate/blue/scorbut/pirate_blue_scorbut.png').convert_alpha(),
+                'crouch_scorbut': pygame.image.load(
+                    './assets/pirate/blue/scorbut/pirate_crouch_blue_scorbut.png').convert_alpha(),
+                'climb1_scorbut': pygame.image.load(
+                    './assets/pirate/blue/scorbut/pirate_climb1_blue_scorbut.png').convert_alpha(),
+                'climb2_scorbut': pygame.image.load(
+                    './assets/pirate/blue/scorbut/pirate_climb2_blue_scorbut.png').convert_alpha(),
+                'water_right_scorbut': pygame.image.load(
+                    './assets/pirate/blue/scorbut/water_right_blue_scorbut.png').convert_alpha(),
+                'water_left_scorbut': pygame.image.load(
+                    './assets/pirate/blue/scorbut/water_left_blue_scorbut.png').convert_alpha(),
+                'bucket_right_scorbut': pygame.image.load(
+                    './assets/pirate/blue/scorbut/water_right_blue_scorbut.png').convert_alpha(),
+                'bucket_left_scorbut': pygame.image.load(
+                    './assets/pirate/blue/scorbut/water_left_blue_scorbut.png').convert_alpha()
             }
 
+        self.incidents = []
 
-        self.img = self.sprites['normal']
+        self.img = self.sprites['normal' + ('_scorbut' if self.has_scurvy() else '')]
         self.mask = pygame.mask.from_surface(pygame.image.load('./assets/pirate/pirate_mask.png').convert_alpha())
         self.rect: pygame.Rect = self.img.get_rect()
 
@@ -90,7 +111,6 @@ class Pirate(pygame.sprite.Sprite):
         self.initial_pos = pos
         self.respawn_timer = -1
 
-
         self.touch_fire = None
         self.touch_fire_right = True
         self.touch_flood = None
@@ -103,7 +123,6 @@ class Pirate(pygame.sprite.Sprite):
         else:
             scorex = 1660
         self.score = Score((scorex, 50))
-        self.incidents = []
 
     def update(
             self,
@@ -123,14 +142,14 @@ class Pirate(pygame.sprite.Sprite):
             self.is_looking_right = True
 
         if keys[self.controls['down']]:
-            self.img = self.sprites['crouch']
+            self.img = self.sprites['crouch' + ('_scorbut' if self.has_scurvy() else '')]
         elif on_ladder and keys[self.controls['up']]:
             if (pygame.time.get_ticks() // 250) % 2 == 0:
-                self.img = self.sprites['climb1']
+                self.img = self.sprites['climb1' + ('_scorbut' if self.has_scurvy() else '')]
             else:
-                self.img = self.sprites['climb2']
+                self.img = self.sprites['climb2' + ('_scorbut' if self.has_scurvy() else '')]
         else:
-            self.img = self.sprites['normal']
+            self.img = self.sprites['normal' + ('_scorbut' if self.has_scurvy() else '')]
 
         if keys[self.controls['left']]:
             self.vx = max(self.vx - 1, -MAX_X_SPEED)
@@ -145,20 +164,26 @@ class Pirate(pygame.sprite.Sprite):
 
         if keys[self.controls['action']]:
             if self.touch_fire is not None:
-                self.img = self.sprites['water_left'] if self.touch_fire_right else self.sprites['water_right']
+                self.img = self.sprites[
+                    'water_left' + ('_scorbut' if self.has_scurvy() else '')] if self.touch_fire_right else self.sprites[
+                    'water_right' + ('_scorbut' if self.has_scurvy() else '')]
                 self.touch_fire.life_points -= 1  # trouver quel feu a eteindre et enlever 1 life_point
                 if self.touch_fire.life_points <= 0.0:
                     self.incidents.remove(self.touch_fire)
                     self.touch_fire = None
             if self.touch_flood is not None:
-                self.img = self.sprites['bucket_left'] if self.touch_flood_right else self.sprites['bucket_right']
+                self.img = self.sprites[
+                    'bucket_left' + ('_scorbut' if self.has_scurvy() else '')] if self.touch_flood_right else \
+                self.sprites['bucket_right' + ('_scorbut' if self.has_scurvy() else '')]
                 self.touch_flood.life_points -= 1  # trouver quel inondation a ecoper et enlever 1 life_point
                 if self.touch_flood.life_points <= 0.0:
                     self.incidents.remove(self.touch_flood)
                     self.touch_flood = None
 
-            else: #elif not self.touch_fire:
-                self.img = self.sprites['punch_right'] if self.is_looking_right else self.sprites['punch_left']
+            else:  # elif not self.touch_fire:
+                self.img = self.sprites[
+                    'punch_right' + ('_scorbut' if self.has_scurvy() else '')] if self.is_looking_right else self.sprites[
+                    'punch_left' + ('_scorbut' if self.has_scurvy() else '')]
 
         self.vy += GRAVITY
 
@@ -222,3 +247,6 @@ class Pirate(pygame.sprite.Sprite):
 
         self.score.draw(math.floor(self.score.value), self.score.pos, self.screen)
         self.screen.blit(self.img, self.rect)
+
+    def has_scurvy(self):
+        return Scurvy in [type(x) for x in self.incidents]
