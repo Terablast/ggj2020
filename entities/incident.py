@@ -136,9 +136,9 @@ class Flood(Incident):
             *groups
     ):
         if len(Flood.FRAMES) == 0:
-            for i in range(1, 11):
+            for i in range(1, 6):
                 Flood.FRAMES.append(
-                    pygame.image.load('./assets/flood/frame (' + str(i) + ').png').convert_alpha()
+                    pygame.image.load('./assets/flood/frame' + str(i) + '.png').convert_alpha()
                 )
 
         img = Flood.FRAMES[0]
@@ -179,7 +179,7 @@ class Flood(Incident):
                 self.pirate.touch_flood_right = False
 
     def draw(self):
-        self.img = Flood.FRAMES[(pygame.time.get_ticks() // 50) % 10]
+        self.img = Flood.FRAMES[(pygame.time.get_ticks() // 50) % 5]
         super().draw()
 
 
