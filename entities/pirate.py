@@ -1,10 +1,13 @@
-import pygame
 import math
+
+import pygame
+
 from entities.score import Score
 
-MAX_SPEED = 4
+MAX_X_SPEED = 7
+MAX_Y_SPEED = 10
 JUMP_VELOCITY = -8
-GRAVITY = 0.25
+GRAVITY = 0.50
 
 
 class Pirate(pygame.sprite.Sprite):
@@ -72,12 +75,12 @@ class Pirate(pygame.sprite.Sprite):
 
         if keys[self.controls['up']]:
             if on_ladder:
-                self.vy = JUMP_VELOCITY / 5
+                self.vy = JUMP_VELOCITY / 3
             elif not self.jumping:
                 self.vy += JUMP_VELOCITY
 
         if keys[self.controls['right']]:
-            self.vx = min(self.vx + 1, MAX_SPEED)
+            self.vx = min(self.vx + 1, MAX_X_SPEED)
             self.is_looking_right = True
 
         if keys[self.controls['down']]:
@@ -91,7 +94,7 @@ class Pirate(pygame.sprite.Sprite):
             self.img = self.sprites['normal']
 
         if keys[self.controls['left']]:
-            self.vx = max(self.vx - 1, -MAX_SPEED)
+            self.vx = max(self.vx - 1, -MAX_X_SPEED)
             self.is_looking_right = False
 
         if not keys[self.controls['left']] and not keys[self.controls['right']]:
@@ -104,18 +107,18 @@ class Pirate(pygame.sprite.Sprite):
         if keys[self.controls['action']]:
             if self.touch_fire is not None:
                 self.img = self.sprites['water_left'] if self.touch_fire_right else self.sprites['water_right']
-                self.touch_fire.life_points-=1 #trouver quel feu a eteindre et enlever 1 life_point
-                if self.touch_fire.life_points<=0.0:
+                self.touch_fire.life_points -= 1  # trouver quel feu a eteindre et enlever 1 life_point
+                if self.touch_fire.life_points <= 0.0:
                     self.incidents.remove(self.touch_fire)
-                    self.touch_fire=None
+                    self.touch_fire = None
 
             elif not self.touch_fire:
                 self.img = self.sprites['punch_right'] if self.is_looking_right else self.sprites['punch_left']
 
         self.vy += GRAVITY
 
-        if self.vy < -10: self.vy = -10
-        if self.vy > 10: self.vy = 10
+        if self.vy < -MAX_Y_SPEED: self.vy = -MAX_Y_SPEED
+        if self.vy > MAX_Y_SPEED: self.vy = MAX_Y_SPEED
 
         self.rect.left += self.vx
         self.rect.top += self.vy
@@ -131,7 +134,10 @@ class Pirate(pygame.sprite.Sprite):
             self.rect.top = self.initial_pos[1]
             self.respawn_timer = -1
 
-        self.score.value -= 0.5
+        self.score.value = max(0, self.score.value - 0.01 - (len(self.incidents) * 0.1))
+
+        self.touch_fire = None
+
         for incident in self.incidents:
             incident.update()
 

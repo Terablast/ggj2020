@@ -1,4 +1,5 @@
 import datetime
+import sys
 
 from entities.boats import Boats
 from entities.incident import *
@@ -35,13 +36,7 @@ class Game:
             self.options = GameOptions()
         self.c = pygame.time.Clock()
 
-    def print_verbose(self, msg):
-        if self.options.verbose:
-            print(msg)
-
     def start(self):
-        self.print_verbose('Verbosity is on!')
-
         pygame.init()
 
         # Set up the drawing window
@@ -54,13 +49,12 @@ class Game:
                                                  | pygame.FULLSCREEN if self.options.fullscreen else 0)
         screen = pygame.Surface((1920, 1080), )
 
-        wanna_play=True
+        wanna_play = True
         while wanna_play:
             start_menu = True
             img_background = pygame.image.load('assets/menu.jpg').convert()
             screen.blit(img_background, (0, 0))
-            self.printFinalScreen(screen, screen_resized)
-
+            self.draw_resized_screen(screen, screen_resized)
 
             while start_menu:
 
@@ -70,13 +64,14 @@ class Game:
                             event.key == pygame.K_F4 and
                             event.mod & pygame.KMOD_ALT != 0):
                         running = False
+                        sys.exit()
 
                     if event.type == pygame.VIDEORESIZE:
                         screen_resized = pygame.display.set_mode(event.dict['size'],
                                                                  pygame.HWSURFACE | pygame.DOUBLEBUF | pygame.RESIZABLE
                                                                  | pygame.FULLSCREEN if self.options.fullscreen else 0)
                         self.options.width, self.options.height = screen_resized.get_size()
-                        self.printFinalScreen(screen, screen_resized)
+                        self.draw_resized_screen(screen, screen_resized)
                     if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                         start_menu = False
                 pygame.display.flip()
@@ -140,8 +135,6 @@ class Game:
                     last_incident = datetime.datetime.now()
 
                     if random.random() <= Game.INCIDENT_CHANCE:
-                        # IT'S HAPPENING
-
                         potential_incident_types = [
                             Fire.__name__,
                             Flood.__name__
@@ -153,23 +146,18 @@ class Game:
                         incident_type = random.choice(potential_incident_types)
 
                         if Fire.__name__ == incident_type:
-                            print('FIRE')
                             last_incident_type = Fire.__name__
 
                             other_fires_left = [x for x in pirate_left.incidents if type(x) is Fire]
-
                             if len(other_fires_left) < len(Fire.POSITIONS_LEFT):
                                 pirate_left.incidents.append(Fire(pirate_left, screen))
 
-                            # pirate_right.incidents.append(Fire(pirate_right, screen))
+                            other_fires_right = [x for x in pirate_right.incidents if type(x) is Fire]
+                            if len(other_fires_right) < len(Fire.POSITIONS_RIGHT):
+                                pirate_right.incidents.append(Fire(pirate_right, screen))
 
-                            pass  # Lightning has struck: FIRE!
                         elif Flood.__name__ == incident_type:
-                            print('FLOOD')
                             last_incident_type = Flood.__name__
-                            pass  # The hull broke: FLOOD!
-                    else:
-                        print('the calm before the storm')
 
                 pirate_left.update(
                     pygame.key.get_pressed(),
@@ -190,22 +178,23 @@ class Game:
                 pirate_right.draw()
 
                 # screen.blit(img_rain, (0, -1080 + (
-                #    pygame.time.get_ticks() % 1080
+                #   pygame.time.get_ticks() % 1080
                 # )))
 
-                self.printFinalScreen(screen, screen_resized)
+                self.draw_resized_screen(screen, screen_resized)
                 # Flip the display
                 pygame.display.flip()
 
-                self.c.tick(120)
+                self.c.tick(60)
                 # print(self.c.get_fps())
-                if pirate_left.score.value<=0.0:
-                    running=False
-                    right_win_go_screen=True
+
+                if pirate_left.score.value <= 0.0:
+                    running = False
+                    right_win_go_screen = True
 
                     img_background = pygame.image.load('assets/player_right_win.jpg').convert()
                     screen.blit(img_background, (0, 0))
-                    self.printFinalScreen(screen, screen_resized)
+                    self.draw_resized_screen(screen, screen_resized)
                     while right_win_go_screen:
 
                         for event in pygame.event.get():
@@ -220,22 +209,22 @@ class Game:
                                                                          pygame.HWSURFACE | pygame.DOUBLEBUF | pygame.RESIZABLE
                                                                          | pygame.FULLSCREEN if self.options.fullscreen else 0)
                                 self.options.width, self.options.height = screen_resized.get_size()
-                                self.printFinalScreen(screen, screen_resized)
+                                self.draw_resized_screen(screen, screen_resized)
                             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                                wanna_play=True
-                                right_win_go_screen=False
+                                wanna_play = True
+                                right_win_go_screen = False
                             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                                 wanna_play = False
                                 right_win_go_screen = False
 
                         pygame.display.flip()
                 if pirate_right.score.value <= 0.0:
-                    running=False
+                    running = False
                     left_win_go_screen = True
 
                     img_background = pygame.image.load('assets/player_left_win.jpg').convert()
                     screen.blit(img_background, (0, 0))
-                    self.printFinalScreen(screen, screen_resized)
+                    self.draw_resized_screen(screen, screen_resized)
                     while left_win_go_screen:
 
                         for event in pygame.event.get():
@@ -250,10 +239,10 @@ class Game:
                                                                          pygame.HWSURFACE | pygame.DOUBLEBUF | pygame.RESIZABLE
                                                                          | pygame.FULLSCREEN if self.options.fullscreen else 0)
                                 self.options.width, self.options.height = screen_resized.get_size()
-                                self.printFinalScreen(screen, screen_resized)
+                                self.draw_resized_screen(screen, screen_resized)
                             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                                wanna_play=True
-                                left_win_go_screen=False
+                                wanna_play = True
+                                left_win_go_screen = False
                             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                                 wanna_play = False
                                 left_win_go_screen = False
@@ -262,7 +251,7 @@ class Game:
         # Done! Time to quit.
         pygame.quit()
 
-    def printFinalScreen(self, screen, screen_resized):
+    def draw_resized_screen(self, screen, screen_resized):
         if self.options.width == 1920 and self.options.height == 1080:
             screen_resized.blit(screen, (0, 0))
         else:

@@ -1,6 +1,7 @@
 import random
 
 import pygame
+
 from entities.bar import Bar
 
 
@@ -26,11 +27,12 @@ class Incident(pygame.sprite.Sprite):
         self.rect.left = self.pos[0]
         self.rect.top = self.pos[1]
 
-        self.life_points = 1000
+        self.life_points = 100
         self.bar = Bar(self.rect.bottomleft, (100, 20), 1000, self.life_points)
+
     def draw(self):
         self.screen.blit(self.img, self.rect)
-        self.bar.draw(self.rect.bottomleft,(self.rect.width,self.rect.height),1000,self.life_points,self.screen)
+        self.bar.draw(self.rect.bottomleft, (self.rect.width, self.rect.height), 100, self.life_points, self.screen)
 
 
 class Fire(Incident):
@@ -42,6 +44,13 @@ class Fire(Incident):
         (693, 623),
     ]
 
+    POSITIONS_RIGHT = [
+        (1200, 487),
+        (1700, 487),
+        (1200, 623),
+        (1700, 623),
+    ]
+
     def __init__(
             self,
             pirate,
@@ -51,14 +60,14 @@ class Fire(Incident):
         if len(Fire.FRAMES) == 0:
             for i in range(1, 11):
                 Fire.FRAMES.append(
-                    pygame.image.load('./assets/fire/mask.png').convert_alpha()
+                    pygame.image.load('./assets/fire/frame (' + str(i) + ').png').convert_alpha()
                 )
 
         img = Fire.FRAMES[0]
 
         other_fires = [x for x in pirate.incidents if type(x) is Fire]
 
-        potential_positions = [x for x in Fire.POSITIONS_LEFT]
+        potential_positions = [x for x in (Fire.POSITIONS_LEFT if pirate.is_player_left else Fire.POSITIONS_RIGHT)]
 
         for of in other_fires:
             potential_positions.remove(of.pos)
@@ -84,8 +93,7 @@ class Fire(Incident):
                 self.pirate.touch_fire_right = True
             else:
                 self.pirate.touch_fire_right = False
-        else:
-            self.pirate.touch_fire = None
+
 
     def draw(self):
         self.img = Fire.FRAMES[(pygame.time.get_ticks() // 50) % 10]
