@@ -47,7 +47,7 @@ class Fire(Incident):
         if len(Fire.FRAMES) == 0:
             for i in range(1, 11):
                 Fire.FRAMES.append(
-                    pygame.image.load('assets/fire/frame (' + str(i) + ').png').convert_alpha()
+                    pygame.image.load('./assets/fire/mask.png').convert_alpha()
                 )
 
         img = Fire.FRAMES[0]
@@ -58,7 +58,7 @@ class Fire(Incident):
 
         for of in other_fires:
             potential_positions.remove(of.pos)
-
+        self.mask = pygame.mask.from_surface(pygame.image.load('./assets/fire/mask.png').convert_alpha())
         self.pos = random.choice(potential_positions)
 
         super().__init__(
@@ -68,8 +68,22 @@ class Fire(Incident):
             *groups
         )
 
+    def update(self):
+        collision_point = self.mask.overlap(
+            self.pirate.mask,
+            ((self.pirate.rect.x - self.rect.x), (self.pirate.rect.y - self.rect.y))
+        )
+
+        if collision_point is not None:
+            self.pirate.touch_fire = True
+            if self.pirate.rect.x > self.rect.x + self.rect.width / 2:
+                self.pirate.touch_fire_right = True
+            else:
+                self.pirate.touch_fire_right = False
+
+
     def draw(self):
-        self.img = Fire.FRAMES[(pygame.time.get_ticks() // 20) % 10]
+        self.img = Fire.FRAMES[(pygame.time.get_ticks() // 50) % 10]
         super().draw()
 
 

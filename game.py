@@ -1,6 +1,5 @@
 import datetime
 
-from entities.bar import Bar
 from entities.boats import Boats
 from entities.incident import *
 from entities.ladders import Ladders
@@ -78,6 +77,7 @@ class Game:
             pygame.display.flip()
 
         img_background = pygame.image.load('assets/background.jpg').convert()
+        img_rain = pygame.image.load('assets/rain.png').convert_alpha()
 
         boats = Boats(screen, (0, 0))
         ladders = Ladders(screen, (0, 0))
@@ -182,6 +182,11 @@ class Game:
             boats.draw()
             pirate_left.draw()
             pirate_right.draw()
+
+            screen.blit(img_rain, (0, -1080 + (
+                pygame.time.get_ticks() % 1080
+            )))
+
             self.printFinalScreen(screen, screen_resized)
             # Flip the display
             pygame.display.flip()

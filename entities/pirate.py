@@ -27,7 +27,9 @@ class Pirate(pygame.sprite.Sprite):
             'normal': pygame.image.load('./assets/pirate/pirate.png').convert_alpha(),
             'crouch': pygame.image.load('./assets/pirate/pirate_crouch.png').convert_alpha(),
             'climb1': pygame.image.load('./assets/pirate/pirate_grimpe1.png').convert_alpha(),
-            'climb2': pygame.image.load('./assets/pirate/pirate_grimpe2.png').convert_alpha()
+            'climb2': pygame.image.load('./assets/pirate/pirate_grimpe2.png').convert_alpha(),
+            'water_right': pygame.image.load('./assets/pirate/water_right.png').convert_alpha(),
+            'water_left': pygame.image.load('./assets/pirate/water_left.png').convert_alpha()
         }
 
         self.img = self.sprites['normal']
@@ -48,6 +50,9 @@ class Pirate(pygame.sprite.Sprite):
         self.respawn_timer = -1
 
         self.is_player_left = is_player_left
+
+        self.touch_fire = False
+        self.touch_fire_right = True
 
         self.is_looking_right = True
         # initialise le score:
@@ -97,7 +102,10 @@ class Pirate(pygame.sprite.Sprite):
                 self.vx = min(self.vx + 0.5, 0)
 
         if keys[self.controls['action']]:
-            self.img = self.sprites['punch_right'] if self.is_looking_right else self.sprites['punch_left']
+            if self.touch_fire:
+                self.img = self.sprites['water_left'] if self.touch_fire_right else self.sprites['water_right']
+            elif not self.touch_fire:
+                self.img = self.sprites['punch_right'] if self.is_looking_right else self.sprites['punch_left']
 
         self.vy += GRAVITY
 
@@ -119,6 +127,8 @@ class Pirate(pygame.sprite.Sprite):
             self.respawn_timer = -1
 
         self.score.value -= 0.01
+        for incident in self.incidents:
+            incident.update()
 
     def collide(self, mask):
         dx = mask.overlap_area(self.mask, (self.rect.x + 1, self.rect.y)) \
